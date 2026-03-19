@@ -68,7 +68,7 @@
                         <li><a class="smoothscroll" href="#gallery">Gallery</a></li>
                         <li><a class="smoothscroll" href="#casket">Casket</a></li>
                         <li><a class="smoothscroll" href="#gallery">Facilities & Amenities</a></li>
-                        <li><a class="smoothscroll" href="#contact">Contact Us Main Main</a></li>
+                        <li><a class="smoothscroll" href="#contact">Contact Us</a></li>
                         <?php if (session()->get('isLoggedIn')): ?>
                             <li><a class="smoothscroll" href="#account">My Account</a></li>
                         <?php endif; ?>

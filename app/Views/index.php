@@ -11,6 +11,11 @@
     <script>
         document.documentElement.classList.remove('no-js');
         document.documentElement.classList.add('js');
+        // apply saved theme before paint to avoid flash
+        (function() {
+            var t = localStorage.getItem('spv-theme');
+            if (t) document.documentElement.setAttribute('data-theme', t);
+        })();
     </script>
 
     <!-- CSS
@@ -64,7 +69,7 @@
                     <ul class="header-nav__links">
                         <li class="current"><a class="smoothscroll" href="#intro">Intro</a></li>
                         <li><a class="smoothscroll" href="#about">About</a></li>
-                        <li><a class="smoothscroll" href="#menu">Services</a></li>                                                
+                        <li><a class="smoothscroll" href="#menu">Packages</a></li>                                                
                         <li><a class="smoothscroll" href="#gallery">Gallery</a></li>
                         <li><a class="smoothscroll" href="#casket">Casket</a></li>
                         <li><a class="smoothscroll" href="#gallery">Facilities & Amenities</a></li>
@@ -72,7 +77,29 @@
                         <?php if (session()->get('isLoggedIn')): ?>
                             <li><a class="smoothscroll" href="#account">My Account</a></li>
                         <?php endif; ?>
-                    </ul> <!-- end header-nav__links -->  
+                        <li>
+                            <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
+                                <!-- crescent moon (shown in dark mode) -->
+                                <svg class="theme-toggle__icon theme-toggle__icon--moon" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <path d="M12 3a9 9 0 1 0 9 9c0-.46-.04-.92-.1-1.36a5.389 5.389 0 0 1-4.4 2.26 5.403 5.403 0 0 1-3.14-9.8c-.44-.06-.9-.1-1.36-.1z" fill="currentColor"/>
+                                </svg>
+                                <!-- sun (shown in light mode) -->
+                                <svg class="theme-toggle__icon theme-toggle__icon--sun" xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 24 24">
+                                    <circle cx="12" cy="12" r="4.5" fill="currentColor"/>
+                                    <g stroke="currentColor" stroke-width="2" stroke-linecap="round">
+                                        <line x1="12" y1="2"   x2="12" y2="5"/>
+                                        <line x1="12" y1="19"  x2="12" y2="22"/>
+                                        <line x1="2"  y1="12"  x2="5"  y2="12"/>
+                                        <line x1="19" y1="12"  x2="22" y2="12"/>
+                                        <line x1="4.93" y1="4.93"   x2="7.05" y2="7.05"/>
+                                        <line x1="16.95" y1="16.95" x2="19.07" y2="19.07"/>
+                                        <line x1="4.93" y1="19.07"  x2="7.05" y2="16.95"/>
+                                        <line x1="16.95" y1="7.05"  x2="19.07" y2="4.93"/>
+                                    </g>
+                                </svg>
+                            </button>
+                        </li>
+                    </ul> <!-- end header-nav__links -->
                     
                     <div class="header-contact">
                         <?php if (session()->get('isLoggedIn') == FALSE): ?>
@@ -171,19 +198,19 @@
 
                 <div class="column xl-6 lg-6 md-12 s-about__content-end">                   
                     <p>
-                    Lorem ipsum dolor sit amet consectetur adipisicing elit. Quasi earum, ut consequuntur pariatur fugiat aliquam voluptatem officia blanditiis ipsa laboriosam ad velit voluptate nisi saepe quisquam minima culpa eaque amet.
+                        Señora de Porta Vaga Funeral Homes is a trusted provider of funeral services in Cavite, Philippines, known for offering compassionate and professional assistance to families during times of loss. Established on July 10, 2010, Porta Vaga Funeral Homes has been serving the community for over 15 years, demonstrating stability, experience, and unwavering dedication to dignified and reliable funeral care.
                     </p>
 
                     <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem vero sit neque sequi eius illum at porro aperiam. Iusto reiciendis reprehenderit ipsa molestias sit eaque velit, veritatis quod, cum exercitationem doloribus eos cumque, ipsam voluptate! Nam doloribus quibusdam eos ipsum optio animi ea ex. Atque neque nesciunt numquam fugiat inventore!
+                        The story of Porta Vaga Funeral Homes is deeply intertwined with the history, faith, and traditions of the people of Cavite. Its name, “Porta Vaga,” is derived from the historic gateway of Cavite Puerto, a significant port city during the Spanish colonial era. This site is especially notable for its connection to the miraculous image of Our Lady of Porta Vaga, the revered Marian icon and patroness of Cavite.
                     </p>
 
                     <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem vero sit neque sequi eius illum at porro aperiam. Iusto reiciendis reprehenderit ipsa molestias sit eaque velit, veritatis quod, cum exercitationem doloribus eos cumque, ipsam voluptate! Nam doloribus quibusdam eos ipsum optio animi ea ex. Atque neque nesciunt numquam fugiat inventore!
+                        With multiple branches, Porta Vaga Funeral Homes ensures that families have accessible and compassionate support for all funeral arrangements. Each branch is thoughtfully designed to guide families through the memorial process with care, respect, and professionalism.
                     </p>
 
                     <p>
-                    Lorem, ipsum dolor sit amet consectetur adipisicing elit. Dolorem vero sit neque sequi eius illum at porro aperiam. Iusto reiciendis reprehenderit ipsa molestias sit eaque velit, veritatis quod, cum exercitationem doloribus.
+                        Through its years of service, Porta Vaga Funeral Homes continues to uphold its mission of providing comfort and dignity to families during their most difficult moments.
                     </p>
                     <h2>Mission</h2>
                     <p>
@@ -210,7 +237,7 @@
                 <div class="column xl-4 lg-5 md-12 s-menu__content-start">
 
                     <div class="section-header" data-num="02">
-                        <h2 class="text-display-title">Our Services</h2>
+                        <h2 class="text-display-title">Our Packages</h2>
                     </div>  
 
                     <nav class="tab-nav">
@@ -540,7 +567,7 @@
 
             <div class="row s-gallery__header">
                 <div class="column xl-12 section-header-wrap">
-                    <div class="section-header" data-num="03">
+                    <div class="section-header" data-num="04">
                         <h2 class="text-display-title">Gallery</h2>
                     </div>               
                 </div> <!-- end section-header-wrap -->   
@@ -709,7 +736,7 @@
 
                 <div class="column xl-4 lg-5 md-12 s-contact__info">
 
-                    <div class="section-header" data-num="06">
+                    <div class="section-header" data-num="05">
                         <h2 class="text-display-title">Contact Us</h2>
                     </div>
 
@@ -902,14 +929,107 @@
                     <input type="password" id="login-password" name="login-password" placeholder="••••••••" required autocomplete="current-password">
                 </div>
                 <button type="submit" class="btn login-modal__submit">Sign In</button>
-                <p class="login-modal__forgot"><a href="#0">Forgot password?</a></p>
+                <p class="login-modal__forgot"><a href="#0" id="open-forgot">Forgot password?</a></p>
                 <p class="login-modal__create"><a href="#0">Create Account?</a></p>
             </form>
         </div>
     </div>
 
+    <!-- # forgot password modal — step 1: email
+    ================================================== -->
+    <div id="forgot-modal" class="login-modal" role="dialog" aria-modal="true" aria-labelledby="forgot-modal-title" hidden>
+        <div class="login-modal__overlay" id="forgot-modal-overlay"></div>
+        <div class="login-modal__box">
+            <button class="login-modal__close" id="forgot-modal-close" aria-label="Close">&times;</button>
+            <h2 id="forgot-modal-title" class="login-modal__title">Forgot Password</h2>
+            <p class="login-modal__subtitle">Enter your email address and we'll send you an OTP to reset your password.</p>
+            <form class="login-modal__form" id="forgot-form" novalidate>
+                <div class="login-modal__field">
+                    <label for="forgot-email">Email Address</label>
+                    <input type="email" id="forgot-email" name="email" placeholder="your@email.com" required autocomplete="email">
+                </div>
+                <div class="login-modal__status" id="forgot-status" aria-live="polite"></div>
+                <button type="submit" class="btn login-modal__submit" id="forgot-submit">Send OTP</button>
+                <p class="login-modal__forgot"><a href="#0" id="back-to-login">&larr; Back to Login</a></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- # forgot password modal — step 2: OTP
+    ================================================== -->
+    <div id="otp-modal" class="login-modal" role="dialog" aria-modal="true" aria-labelledby="otp-modal-title" hidden>
+        <div class="login-modal__overlay" id="otp-modal-overlay"></div>
+        <div class="login-modal__box">
+            <button class="login-modal__close" id="otp-modal-close" aria-label="Close">&times;</button>
+            <h2 id="otp-modal-title" class="login-modal__title">Enter OTP</h2>
+            <p class="login-modal__subtitle" id="otp-modal-subtitle">We sent a 6-digit code to your email.</p>
+            <form class="login-modal__form" id="otp-form" novalidate>
+                <div class="login-modal__otp-wrap">
+                    <input class="login-modal__otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 1">
+                    <input class="login-modal__otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 2">
+                    <input class="login-modal__otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 3">
+                    <input class="login-modal__otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 4">
+                    <input class="login-modal__otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 5">
+                    <input class="login-modal__otp-input" type="text" maxlength="1" inputmode="numeric" pattern="[0-9]" aria-label="OTP digit 6">
+                </div>
+                <div class="login-modal__status" id="otp-status" aria-live="polite"></div>
+                <button type="submit" class="btn login-modal__submit">Verify OTP</button>
+                <p class="login-modal__forgot">
+                    Didn't receive it? <a href="#0" id="resend-otp">Resend OTP</a>
+                </p>
+            </form>
+        </div>
+    </div>
+
+    <!-- # reset password modal — step 3
+    ================================================== -->
+    <div id="reset-modal" class="login-modal" role="dialog" aria-modal="true" aria-labelledby="reset-modal-title" hidden>
+        <div class="login-modal__overlay" id="reset-modal-overlay"></div>
+        <div class="login-modal__box">
+            <button class="login-modal__close" id="reset-modal-close" aria-label="Close">&times;</button>
+            <h2 id="reset-modal-title" class="login-modal__title">New Password</h2>
+            <p class="login-modal__subtitle">Choose a strong password for your account.</p>
+            <form class="login-modal__form" id="reset-form" novalidate>
+                <div class="login-modal__field">
+                    <label for="reset-password">New Password</label>
+                    <div class="login-modal__input-wrap">
+                        <input type="password" id="reset-password" name="password"
+                               placeholder="Min. 8 characters" required autocomplete="new-password">
+                        <button type="button" class="login-modal__eye" data-target="reset-password" aria-label="Toggle password visibility">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                    <div class="login-modal__strength" id="pwd-strength-bar">
+                        <span></span><span></span><span></span><span></span>
+                    </div>
+                    <small class="login-modal__strength-label" id="pwd-strength-label"></small>
+                </div>
+                <div class="login-modal__field">
+                    <label for="reset-confirm">Confirm Password</label>
+                    <div class="login-modal__input-wrap">
+                        <input type="password" id="reset-confirm" name="confirm_password"
+                               placeholder="Repeat your password" required autocomplete="new-password">
+                        <button type="button" class="login-modal__eye" data-target="reset-confirm" aria-label="Toggle confirm password visibility">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 24 24" fill="none"
+                                 stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/>
+                                <circle cx="12" cy="12" r="3"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                <div class="login-modal__status" id="reset-status" aria-live="polite"></div>
+                <button type="submit" class="btn login-modal__submit" id="reset-submit">Update Password</button>
+            </form>
+        </div>
+    </div>
+
     <script>
-        (function () {
+    (function () {
             const modalLogin   = document.getElementById('login-modal');
             const openBtnLogin = document.getElementById('login-btn');
             const closeBtnLogin = document.getElementById('login-modal-close');
@@ -933,6 +1053,242 @@
 
             document.addEventListener('keydown', function (e) {
                 if (e.key === 'Escape' && !modalLogin.hidden) closeLoginModal();
+            });
+
+            // ── Forgot password flow ──────────────────────────────────────
+            const forgotModal   = document.getElementById('forgot-modal');
+            const forgotClose   = document.getElementById('forgot-modal-close');
+            const forgotOverlay = document.getElementById('forgot-modal-overlay');
+            const forgotForm    = document.getElementById('forgot-form');
+            const forgotStatus  = document.getElementById('forgot-status');
+            const forgotSubmit  = document.getElementById('forgot-submit');
+
+            const otpModal      = document.getElementById('otp-modal');
+            const otpClose      = document.getElementById('otp-modal-close');
+            const otpOverlay    = document.getElementById('otp-modal-overlay');
+            const otpForm       = document.getElementById('otp-form');
+            const otpStatus     = document.getElementById('otp-status');
+            const otpSubtitle   = document.getElementById('otp-modal-subtitle');
+            const otpInputs     = document.querySelectorAll('.login-modal__otp-input');
+
+            let _serverOtp = null;
+
+            function showModal(modal) {
+                modal.hidden = false;
+                document.body.style.overflow = 'hidden';
+                modal.querySelector('button, input').focus();
+            }
+
+            function hideModal(modal) {
+                modal.hidden = true;
+                document.body.style.overflow = '';
+            }
+
+            function setStatus(el, msg, type) {
+                el.textContent = msg;
+                el.className = 'login-modal__status ' + (type || '');
+            }
+
+            // open forgot from login
+            document.getElementById('open-forgot').addEventListener('click', function (e) {
+                e.preventDefault();
+                hideModal(modalLogin);
+                showModal(forgotModal);
+            });
+
+            // back to login
+            document.getElementById('back-to-login').addEventListener('click', function (e) {
+                e.preventDefault();
+                hideModal(forgotModal);
+                showModal(modalLogin);
+            });
+
+            forgotClose.addEventListener('click', function () { hideModal(forgotModal); document.body.style.overflow = ''; });
+            forgotOverlay.addEventListener('click', function () { hideModal(forgotModal); document.body.style.overflow = ''; });
+
+            otpClose.addEventListener('click', function () { hideModal(otpModal); document.body.style.overflow = ''; });
+            otpOverlay.addEventListener('click', function () { hideModal(otpModal); document.body.style.overflow = ''; });
+
+            // send OTP request
+            async function sendOtp(email) {
+                forgotSubmit.disabled = true;
+                forgotSubmit.textContent = 'Sending…';
+                setStatus(forgotStatus, '', '');
+
+                try {
+                    const res = await fetch('/api/forgotPassword/otp', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username: email })
+                    });
+                    const json = await res.json();
+
+                    if (json.status === 'success') {
+                        _serverOtp = json.data.otp;
+                        otpSubtitle.textContent = 'We sent a 6-digit code to ' + email + '.';
+                        hideModal(forgotModal);
+                        showModal(otpModal);
+                        otpInputs[0].focus();
+                        setStatus(otpStatus, '', '');
+                    } else {
+                        const msg = typeof json.message === 'object'
+                            ? Object.values(json.message).join(' ')
+                            : json.message;
+                        setStatus(forgotStatus, msg, 'error');
+                    }
+                } catch (err) {
+                    setStatus(forgotStatus, 'Something went wrong. Please try again.', 'error');
+                } finally {
+                    forgotSubmit.disabled = false;
+                    forgotSubmit.textContent = 'Send OTP';
+                }
+            }
+
+            forgotForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const email = document.getElementById('forgot-email').value.trim();
+                if (!email) return setStatus(forgotStatus, 'Please enter your email.', 'error');
+                sendOtp(email);
+            });
+
+            document.getElementById('resend-otp').addEventListener('click', function (e) {
+                e.preventDefault();
+                const email = document.getElementById('forgot-email').value.trim();
+                if (email) sendOtp(email);
+            });
+
+            // OTP input — auto-advance & backspace
+            otpInputs.forEach(function (input, i) {
+                input.addEventListener('input', function () {
+                    this.value = this.value.replace(/\D/g, '');
+                    if (this.value && i < otpInputs.length - 1) otpInputs[i + 1].focus();
+                });
+                input.addEventListener('keydown', function (e) {
+                    if (e.key === 'Backspace' && !this.value && i > 0) otpInputs[i - 1].focus();
+                });
+                input.addEventListener('paste', function (e) {
+                    e.preventDefault();
+                    const digits = (e.clipboardData.getData('text') || '').replace(/\D/g, '').slice(0, 6);
+                    digits.split('').forEach(function (d, j) {
+                        if (otpInputs[j]) otpInputs[j].value = d;
+                    });
+                    const next = Math.min(digits.length, otpInputs.length - 1);
+                    otpInputs[next].focus();
+                });
+            });
+
+            // verify OTP
+            otpForm.addEventListener('submit', function (e) {
+                e.preventDefault();
+                const entered = Array.from(otpInputs).map(function (i) { return i.value; }).join('');
+                if (entered.length < 6) return setStatus(otpStatus, 'Please enter all 6 digits.', 'error');
+
+                if (entered === _serverOtp) {
+                    setStatus(otpStatus, 'OTP verified!', 'success');
+                    setTimeout(function () {
+                        hideModal(otpModal);
+                        showModal(resetModal);
+                        document.getElementById('reset-password').focus();
+                        setStatus(resetStatus, '', '');
+                    }, 600);
+                } else {
+                    setStatus(otpStatus, 'Incorrect OTP. Please try again.', 'error');
+                    otpInputs.forEach(function (i) { i.value = ''; });
+                    otpInputs[0].focus();
+                }
+            });
+
+            // ── Reset password flow ───────────────────────────────────────
+            const resetModal  = document.getElementById('reset-modal');
+            const resetStatus = document.getElementById('reset-status');
+            const resetSubmit = document.getElementById('reset-submit');
+
+            document.getElementById('reset-modal-close').addEventListener('click', function () { hideModal(resetModal); });
+            document.getElementById('reset-modal-overlay').addEventListener('click', function () { hideModal(resetModal); });
+
+            // toggle password visibility
+            document.querySelectorAll('.login-modal__eye').forEach(function (btn) {
+                btn.addEventListener('click', function () {
+                    const input = document.getElementById(this.dataset.target);
+                    input.type = input.type === 'password' ? 'text' : 'password';
+                    this.classList.toggle('is-active');
+                });
+            });
+
+            // password strength meter
+            const pwdInput      = document.getElementById('reset-password');
+            const strengthBar   = document.querySelectorAll('#pwd-strength-bar span');
+            const strengthLabel = document.getElementById('pwd-strength-label');
+            const levels        = ['', 'Weak', 'Fair', 'Good', 'Strong'];
+            const colors        = ['', '#e07070', '#e0a870', '#a8c070', 'var(--color-1-400)'];
+
+            pwdInput.addEventListener('input', function () {
+                const v = this.value;
+                let score = 0;
+                if (v.length >= 8)            score++;
+                if (/[A-Z]/.test(v))          score++;
+                if (/[0-9]/.test(v))          score++;
+                if (/[^A-Za-z0-9]/.test(v))   score++;
+                strengthBar.forEach(function (s, i) {
+                    s.style.background = i < score ? colors[score] : '';
+                });
+                strengthLabel.textContent = v.length ? levels[score] : '';
+                strengthLabel.style.color = colors[score];
+            });
+
+            // submit reset
+            document.getElementById('reset-form').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                const pwd     = document.getElementById('reset-password').value;
+                const confirm = document.getElementById('reset-confirm').value;
+                const email   = document.getElementById('forgot-email').value.trim();
+
+                if (pwd.length < 8) return setStatus(resetStatus, 'Password must be at least 8 characters.', 'error');
+                if (pwd !== confirm) return setStatus(resetStatus, 'Passwords do not match.', 'error');
+
+                resetSubmit.disabled = true;
+                resetSubmit.textContent = 'Updating…';
+                setStatus(resetStatus, '', '');
+
+                try {
+                    const res  = await fetch('/api/forgotPassword/resets', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ username: email, password: pwd, confirm_password: confirm })
+                    });
+                    const json = await res.json();
+
+                    if (json.status === 'success') {
+                        setStatus(resetStatus, 'Password updated! You can now log in.', 'success');
+                        document.getElementById('reset-form').reset();
+                        strengthBar.forEach(function (s) { s.style.background = ''; });
+                        strengthLabel.textContent = '';
+                        setTimeout(function () {
+                            hideModal(resetModal);
+                            showModal(modalLogin);
+                        }, 1800);
+                    } else {
+                        const msg = typeof json.message === 'object'
+                            ? Object.values(json.message).join(' ')
+                            : json.message;
+                        setStatus(resetStatus, msg, 'error');
+                    }
+                } catch (err) {
+                    setStatus(resetStatus, 'Something went wrong. Please try again.', 'error');
+                } finally {
+                    resetSubmit.disabled = false;
+                    resetSubmit.textContent = 'Update Password';
+                }
+            });
+
+            // ── Theme toggle ──────────────────────────────────────────────
+            var html   = document.documentElement;
+            var themeBtn = document.getElementById('theme-toggle');
+
+            themeBtn.addEventListener('click', function () {
+                var next = html.getAttribute('data-theme') === 'light' ? 'dark' : 'light';
+                html.setAttribute('data-theme', next);
+                localStorage.setItem('spv-theme', next);
             });
         })();
     </script>

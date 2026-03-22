@@ -3213,7 +3213,7 @@ td:last-child {
     --logo-width    : 10.8rem;
 
     z-index         : 100;
-    background-color: transparent;
+    background-color: #366b5b;
     font-size       : var(--text-sm);
     line-height     : var(--vspace-1);
     height          : var(--header-height);
@@ -3224,7 +3224,7 @@ td:last-child {
 }
 
 .s-header .s-header__content {
-    background-color: transparent;
+    background-color: #366b5b;
 }
 
 .s-header.offset {
@@ -3242,7 +3242,7 @@ td:last-child {
 
     opacity         : 0;
     visibility      : hidden;
-    background-color: var(--color-bg);
+    background-color: #366b5b;
     box-shadow      : var(--shadow-medium);
     border-bottom   : 1px solid var(--color-bg-neutral-dark);
     position        : fixed;
@@ -3315,7 +3315,7 @@ td:last-child {
     display            : block;
     font-family        : var(--type-body);
     font-weight        : 500;
-    color              : var(--color-text-light);
+    color              : #ffffff;
     padding            : 0 var(--vspace-0_375);
     transition-property: color, background-color;
     transition-duration: 0.3s;
@@ -3526,6 +3526,7 @@ td:last-child {
         transform       : scaleY(1);
         transition      : transform 0.3s var(--ease-quick-out);
         transition-delay: 0s;
+        background-color: #366b5b;
     }
 
     .menu-is-open .header-nav__links,
@@ -5274,4 +5275,328 @@ td:last-child {
     .s-contact__submit {
         width: 100%;
     }
+}
+
+
+/* =================================================================== 
+ * # FORGOT PASSWORD / OTP MODAL ADDITIONS
+ * ------------------------------------------------------------------- */
+
+.login-modal__subtitle {
+    font-size: 1.4rem;
+    color: var(--color-neutral-400);
+    text-align: center;
+    margin-top: -1.6rem;
+    margin-bottom: 2.4rem;
+    line-height: 1.6;
+}
+
+.login-modal__status {
+    font-size: 1.3rem;
+    min-height: 1.8rem;
+    text-align: center;
+}
+
+.login-modal__status.error   { color: #e07070; }
+.login-modal__status.success { color: var(--color-1-400); }
+
+/* OTP digit inputs */
+.login-modal__otp-wrap {
+    display: flex;
+    justify-content: center;
+    gap: 1rem;
+    margin-bottom: 0.8rem;
+}
+
+.login-modal__otp-input {
+    width: 4.8rem;
+    height: 5.6rem;
+    text-align: center;
+    font-size: 2rem;
+    font-weight: 600;
+    background: var(--color-neutral-800);
+    border: 1px solid var(--color-neutral-650);
+    border-radius: 0.4rem;
+    color: var(--color-white);
+    caret-color: var(--color-1-400);
+    transition: border-color 0.2s;
+}
+
+.login-modal__otp-input:focus {
+    outline: none;
+    border-color: var(--color-1-400);
+}
+
+@media screen and (max-width: 400px) {
+    .login-modal__otp-input {
+        width: 3.8rem;
+        height: 4.8rem;
+        font-size: 1.8rem;
+    }
+
+    .login-modal__otp-wrap {
+        gap: 0.6rem;
+    }
+}
+
+
+/* =================================================================== 
+ * # RESET PASSWORD MODAL ADDITIONS
+ * ------------------------------------------------------------------- */
+
+.login-modal__input-wrap {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.login-modal__input-wrap input {
+    padding-right: 4.4rem;
+}
+
+.login-modal__eye {
+    position: absolute;
+    right: 1.2rem;
+    background: none;
+    border: none;
+    color: var(--color-neutral-500);
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    transition: color 0.2s;
+}
+
+.login-modal__eye:hover,
+.login-modal__eye.is-active {
+    color: var(--color-1-400);
+}
+
+/* strength bar */
+.login-modal__strength {
+    display: flex;
+    gap: 0.4rem;
+    margin-top: 0.8rem;
+}
+
+.login-modal__strength span {
+    flex: 1;
+    height: 0.4rem;
+    border-radius: 9999px;
+    background: var(--color-neutral-700);
+    transition: background 0.3s;
+}
+
+.login-modal__strength-label {
+    font-size: 1.2rem;
+    margin-top: 0.4rem;
+    display: block;
+    transition: color 0.3s;
+}
+
+
+/* =================================================================== 
+ * # DARK / LIGHT MODE  —  brand #366b5b  accent #93e9be
+ * ------------------------------------------------------------------- */
+
+/* ── Shared brand + accent tokens ── */
+:root {
+    --theme-brand           : #366b5b;
+    --theme-brand-light     : #468672;
+    --theme-brand-dark      : #2e574a;
+    --theme-brand-darker    : #253c35;
+
+    --theme-accent          : #93e9be;   /* mint highlight */
+    --theme-accent-dark     : #5ecfa0;   /* hover/pressed */
+    --theme-accent-text     : #0f2a20;   /* text on mint bg */
+}
+
+/* ── Dark mode (default) ── */
+:root {
+
+    --theme-bg              : #1e3530;   /* lighter green-tinted dark */
+    --theme-bg-surface      : #274840;   /* cards / modals */
+    --theme-bg-elevated     : #2f5549;   /* inputs / raised elements */
+    --theme-border          : #3d6b5e;
+    --theme-text            : #c8d8d3;
+    --theme-text-muted      : #6b8c84;
+    --theme-heading         : #e8f0ed;
+}
+
+/* apply to semantic tokens */
+:root {
+    --color-bg                    : var(--theme-bg);
+    --color-bg-neutral            : var(--theme-bg-surface);
+    --color-bg-neutral-light      : var(--theme-bg-elevated);
+    --color-bg-neutral-dark       : #182e28;
+    --color-border                : var(--theme-border);
+    --color-text                  : var(--theme-text);
+    --color-text-light            : var(--theme-text-muted);
+    --color-headings              : var(--theme-heading);
+    --color-bg-primary            : var(--theme-brand);
+    --color-bg-primary-light      : var(--theme-brand-light);
+    --color-bg-primary-dark       : var(--theme-brand-dark);
+    --color-bg-accent             : var(--theme-accent);
+    --color-bg-accent-light       : var(--theme-accent);
+    --color-bg-accent-dark        : var(--theme-accent-dark);
+    --color-link                  : var(--theme-accent);
+    --color-link-hover            : var(--theme-accent-dark);
+    --color-btn                   : var(--theme-brand);
+    --color-btn-text              : var(--theme-heading);
+    --color-btn-hover             : var(--theme-accent);
+    --color-btn-hover-text        : var(--theme-accent-text);
+    --color-btn-primary           : var(--theme-accent);
+    --color-btn-primary-text      : var(--theme-accent-text);
+    --color-btn-primary-hover     : var(--theme-accent-dark);
+    --color-btn-primary-hover-text: var(--theme-accent-text);
+    --color-preloader-bg          : var(--theme-bg);
+    --color-white                 : var(--theme-heading);
+    --shadow-color                : 160, 30%, 5%;
+}
+
+/* dark mode — modal & form surfaces */
+.login-modal__box {
+    background  : var(--theme-bg-surface);
+    border-color: var(--theme-border);
+}
+
+.login-modal__field input,
+.login-modal__field textarea,
+.login-modal__otp-input,
+.s-contact__field input,
+.s-contact__field textarea {
+    background  : var(--theme-bg-elevated);
+    border-color: var(--theme-border);
+    color       : var(--theme-heading);
+}
+
+.login-modal__field input:focus,
+.login-modal__field textarea:focus,
+.login-modal__otp-input:focus,
+.s-contact__field input:focus,
+.s-contact__field textarea:focus {
+    border-color: var(--theme-accent);
+    box-shadow  : 0 0 0 3px rgba(147,233,190,0.18);
+}
+
+.login-modal__strength span {
+    background: var(--theme-border);
+}
+
+/* ── Light mode — mint-tinted whites ── */
+[data-theme="light"] {
+    --theme-bg              : #ffffff;   /* white body */
+    --theme-bg-surface      : #f5faf8;   /* cards / modals */
+    --theme-bg-elevated     : #eaf4ef;   /* inputs / raised elements */
+    --theme-border          : #a8dfc4;
+    --theme-text            : #1e3d30;
+    --theme-text-muted      : #5a8a72;
+    --theme-heading         : #0f2a20;
+
+    --color-bg                    : var(--theme-bg);
+    --color-bg-neutral            : var(--theme-bg-surface);
+    --color-bg-neutral-light      : var(--theme-bg-elevated);
+    --color-bg-neutral-dark       : #d4eee2;
+    --color-border                : var(--theme-border);
+    --color-text                  : var(--theme-text);
+    --color-text-light            : var(--theme-text-muted);
+    --color-headings              : var(--theme-heading);
+    --color-bg-primary            : var(--theme-brand);
+    --color-bg-primary-light      : var(--theme-brand-light);
+    --color-bg-primary-dark       : var(--theme-brand-dark);
+    --color-bg-accent             : var(--theme-brand);
+    --color-bg-accent-light       : var(--theme-brand-light);
+    --color-bg-accent-dark        : var(--theme-brand-dark);
+    --color-link                  : var(--theme-brand);
+    --color-link-hover            : var(--theme-brand-dark);
+    --color-btn                   : var(--theme-brand);
+    --color-btn-text              : #ffffff;
+    --color-btn-hover             : var(--theme-brand-dark);
+    --color-btn-hover-text        : #ffffff;
+    --color-btn-primary           : var(--theme-brand);
+    --color-btn-primary-text      : #ffffff;
+    --color-btn-primary-hover     : var(--theme-brand-dark);
+    --color-btn-primary-hover-text: #ffffff;
+    --color-preloader-bg          : var(--theme-bg);
+    --color-white                 : var(--theme-heading);
+    --shadow-color                : 160, 40%, 20%;
+}
+
+/* light mode — modal & form surfaces */
+[data-theme="light"] .login-modal__box {
+    background  : var(--theme-bg-surface);
+    border-color: var(--theme-border);
+    box-shadow  : 0 2.4rem 6rem rgba(54,107,91,0.12);
+}
+
+[data-theme="light"] .login-modal__field input,
+[data-theme="light"] .login-modal__field textarea,
+[data-theme="light"] .login-modal__otp-input,
+[data-theme="light"] .s-contact__field input,
+[data-theme="light"] .s-contact__field textarea {
+    background  : var(--theme-bg-elevated);
+    border-color: var(--theme-border);
+    color       : var(--theme-heading);
+}
+
+[data-theme="light"] .login-modal__field input:focus,
+[data-theme="light"] .login-modal__field textarea:focus,
+[data-theme="light"] .login-modal__otp-input:focus,
+[data-theme="light"] .s-contact__field input:focus,
+[data-theme="light"] .s-contact__field textarea:focus {
+    border-color: var(--theme-brand);
+    box-shadow  : 0 0 0 3px rgba(54,107,91,0.15);
+}
+
+[data-theme="light"] .login-modal__field input::placeholder,
+[data-theme="light"] .login-modal__field textarea::placeholder,
+[data-theme="light"] .login-modal__otp-input::placeholder,
+[data-theme="light"] .s-contact__field input::placeholder,
+[data-theme="light"] .s-contact__field textarea::placeholder {
+    color: var(--theme-text-muted);
+}
+
+[data-theme="light"] .login-modal__title,
+[data-theme="light"] .login-modal__otp-input { color: var(--theme-heading); }
+
+[data-theme="light"] .login-modal__strength span { background: var(--theme-border); }
+
+/* ── Theme toggle button ── */
+.theme-toggle {
+    background     : none;
+    border         : none;
+    padding        : 0.4rem;
+    display        : flex;
+    align-items    : center;
+    justify-content: center;
+    cursor         : pointer;
+    color          : #93e9be;   /* mint — visible on #366b5b nav */
+    transition     : color 0.2s, transform 0.2s;
+    flex-shrink    : 0;
+    align-self     : center;
+}
+
+.theme-toggle:hover {
+    color    : #ffffff;
+    transform: scale(1.2) rotate(12deg);
+}
+
+[data-theme="light"] .theme-toggle       { color: #ffffff; }  /* white on green nav */
+[data-theme="light"] .theme-toggle:hover { color: #93e9be; }
+
+/* show moon in dark mode, sun in light mode */
+.theme-toggle__icon--sun  { display: none; }
+.theme-toggle__icon--moon { display: block; }
+
+[data-theme="light"] .theme-toggle__icon--sun  { display: block; }
+[data-theme="light"] .theme-toggle__icon--moon { display: none; }
+
+/* smooth transition on theme switch */
+body,
+.login-modal__box,
+.s-contact__field input,
+.s-contact__field textarea,
+.login-modal__field input,
+.login-modal__otp-input {
+    transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }

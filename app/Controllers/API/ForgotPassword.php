@@ -75,4 +75,50 @@ class ForgotPassword extends BaseController
             ]);
         }
     }
+
+    public function resets()
+    {
+        try {
+            $data = $this->request->getJSON(true);
+
+            $rules = [
+                'username'         => 'required|valid_email',
+                'password'         => 'required|min_length[8]',
+                'confirm_password' => 'required|matches[password]',
+            ];
+
+            if (!$this->validate($rules)) {
+                return $this->respondCreated([
+                    'status'  => 'error',
+                    'message' => $this->validator->getErrors(),
+                ]);
+            }
+
+            $accountModel = new Accountmodel();
+            $account = $accountModel->where('fld_Username', $data['username'])
+                ->where('fld_Status', 'Active')
+                ->first();
+
+            if (!$account) {
+                return $this->respondCreated([
+                    'status'  => 'error',
+                    'message' => 'Account not found',
+                ]);
+            }
+
+            $accountModel->update($account['fld_UserId'], [
+                'fld_Password' => password_hash($data['password'], PASSWORD_DEFAULT),
+            ]);
+
+            return $this->respondCreated([
+                'status'  => 'success',
+                'message' => 'Password updated successfully',
+            ]);
+        } catch (\Exception $e) {
+            return $this->respondCreated([
+                'status'  => 'error',
+                'message' => 'Internal Server Error',
+            ]);
+        }
+    }
 }

@@ -1,4 +1,4 @@
-<!DOCTYPE html>
+﻿<!DOCTYPE html>
 <html lang="en" class="no-js" >
 <head>
 
@@ -58,7 +58,7 @@
                 
                 <div class="s-header__block">
                     <div class="header-logo">
-                        <a class="logo" href="index.html">
+                        <a class="logo" href="/">
                             <img src="images/try.png" alt="Homepage">
                         </a>
                     </div>
@@ -67,7 +67,7 @@
             
                 <nav class="header-nav">    
                     <ul class="header-nav__links">
-                        <li class="current"><a class="smoothscroll" href="#intro">Intro</a></li>
+                        <li class="current"><a class="smoothscroll" href="#intro">Home</a></li>
                         <li><a class="smoothscroll" href="#about">About</a></li>
                         <li><a class="smoothscroll" href="#menu">Packages</a></li>                                                
                         <li><a class="smoothscroll" href="#gallery">Gallery</a></li>
@@ -76,6 +76,7 @@
                         <li><a class="smoothscroll" href="#contact">Contact Us</a></li>
                         <?php if (session()->get('isLoggedIn')): ?>
                             <li><a class="smoothscroll" href="#account">My Account</a></li>
+                            <li><a class="smoothscroll" href="#account">Transactions</a></li>
                         <?php endif; ?>
                         <li>
                             <button class="theme-toggle" id="theme-toggle" aria-label="Toggle light/dark mode">
@@ -126,38 +127,56 @@
             <div class="grid-block s-intro__content">
 
                 <div class="intro-header">
-                    <div class="intro-header__overline">Welcome to</div>
+                    <?php
+                        $titleItem = array_values(array_filter($cms_content ?? [], fn($i) => $i['fld_Type'] === 'Title'));
+                    ?>
+                    <div class="intro-header__overline"><?= !empty($titleItem[0]) ? esc($titleItem[0]['fld_Content']) : 'Welcome to' ?></div>
                     <h1 class="intro-header__big-type">
-                        Sñra de <br>
-                        Porta Vaga
+                        <?= !empty($titleItem[1]) ? esc($titleItem[1]['fld_Content']) : 'Sñra de <br>Porta Vaga' ?>
                     </h1>
                 </div> <!-- end intro-header -->
 
                 <figure class="intro-pic-primary">
-                    <img src="images/intro-try2.png" 
-                         srcset="images/intro-try2.png, 
-                         images/intro-try2.png" alt="">  
+                    <?php if (!empty($cms_images[0])): ?>
+                        <img src="data:image/jpeg;base64,<?= $cms_images[0]['fld_Image'] ?>"
+                             alt="<?= esc($cms_images[0]['fld_Alt']) ?>">
+                    <?php else: ?>
+                        <img src="images/intro-try2.png" alt="">
+                    <?php endif; ?>
                 </figure> <!-- end intro-pic-primary -->    
                     
                 <div class="intro-block-content">
 
                     <figure class="intro-block-content__pic">
-                        <img src="images/intro-try3.png" 
-                             srcset="images/intro-try3.png, 
-                             images/intro-try3.png" alt=""> 
+                        <?php if (!empty($cms_images[1])): ?>
+                            <img src="data:image/jpeg;base64,<?= $cms_images[1]['fld_Image'] ?>"
+                                 alt="<?= esc($cms_images[1]['fld_Alt']) ?>">
+                        <?php else: ?>
+                            <img src="images/intro-try3.png" alt="">
+                        <?php endif; ?>
                     </figure> <!-- end intro-pic-secondary -->   
 
                     <div class="intro-block-content__text-wrap">
-                        <p class="intro-block-content__text">
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            Lorem ipsum dolor sit amet consectetur adipisicing elit lorem.
-                        </p>
-                        
+                        <?php if (!empty($cms_content)): ?>
+                            <?php foreach ($cms_content as $item): ?>
+                                <?php if ($item['fld_Type'] === 'Paragraph'): ?>
+                                    <p class="intro-block-content__text"><?= esc($item['fld_Content']) ?></p>
+                                <?php endif; ?>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p class="intro-block-content__text">
+                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                            </p>
+                        <?php endif; ?>                        
                         <ul class="intro-block-content__social">
-                            <li><a href="#0">FB</a></li>
-                            <li><a href="#0">IG</a></li>
-                            <li><a href="#0">PI</a></li>
-                            <li><a href="#0">X</a></li>
+                            <?php if (!empty($cms_socials)): ?>
+                                <?php foreach ($cms_socials as $social): ?>
+                                    <li><a href="<?= esc($social['fld_URL']) ?>" target="_blank" rel="noopener"><?= esc($social['fld_SocialMedia']) ?></a></li>
+                                <?php endforeach; ?>
+                            <?php else: ?>
+                                <li><a href="#0">FB</a></li>
+                                <li><a href="#0">IG</a></li>
+                            <?php endif; ?>
                         </ul>
                     </div> <!-- end intro-block-content__social -->   
 
@@ -191,35 +210,37 @@
                     </div>  
 
                     <figure class="about-pic-primary">
-                        <img src="images/about-try.png" alt=""> 
+                        <?php if (!empty($cms_about_images[0])): ?>
+                            <img src="data:image/jpeg;base64,<?= $cms_about_images[0]['fld_Image'] ?>"
+                                 alt="<?= esc($cms_about_images[0]['fld_Alt']) ?>">
+                        <?php else: ?>
+                            <img src="images/intro-try4.png" alt="">
+                        <?php endif; ?>
                     </figure>
 
                 </div> <!-- end s-about__content-start -->
 
-                <div class="column xl-6 lg-6 md-12 s-about__content-end">                   
-                    <p>
-                        Señora de Porta Vaga Funeral Homes is a trusted provider of funeral services in Cavite, Philippines, known for offering compassionate and professional assistance to families during times of loss. Established on July 10, 2010, Porta Vaga Funeral Homes has been serving the community for over 15 years, demonstrating stability, experience, and unwavering dedication to dignified and reliable funeral care.
-                    </p>
-
-                    <p>
-                        The story of Porta Vaga Funeral Homes is deeply intertwined with the history, faith, and traditions of the people of Cavite. Its name, “Porta Vaga,” is derived from the historic gateway of Cavite Puerto, a significant port city during the Spanish colonial era. This site is especially notable for its connection to the miraculous image of Our Lady of Porta Vaga, the revered Marian icon and patroness of Cavite.
-                    </p>
-
-                    <p>
-                        With multiple branches, Porta Vaga Funeral Homes ensures that families have accessible and compassionate support for all funeral arrangements. Each branch is thoughtfully designed to guide families through the memorial process with care, respect, and professionalism.
-                    </p>
-
-                    <p>
-                        Through its years of service, Porta Vaga Funeral Homes continues to uphold its mission of providing comfort and dignity to families during their most difficult moments.
-                    </p>
-                    <h2>Mission</h2>
-                    <p>
-                        To deliver innovative and personalized funeral services through the use of modern technology, eco-friendly practices, and efficient management systems, while providing compassionate support that respects cultural traditions and meets the evolving needs of families.
-                    </p>
-                    <h2>Vision</h2>
-                    <p>
-                        To be a leading modern funeral service provider that integrates innovation, sustainability, and compassionate care, setting new standards in honoring life and supporting families.
-                    </p>
+                <div class="column xl-6 lg-6 md-12 s-about__content-end">       
+                    <div id="about_content_paragraph">
+                        <?php if (!empty($cms_about)): ?>
+                            <?php foreach ($cms_about as $item): ?>
+                                <p><?= esc($item['fld_Content']) ?></p>
+                            <?php endforeach; ?>
+                        <?php else: ?>
+                            <p>Señora de Porta Vaga Funeral Homes is a trusted provider of funeral services in Cavite, Philippines.</p>
+                        <?php endif; ?>
+                    </div>
+                    <?php if (!empty($cms_mission_vision)): ?>
+                        <?php foreach ($cms_mission_vision as $item): ?>
+                            <h2><?= esc(ucfirst($item['fld_Type'])) ?></h2>
+                            <p><?= esc($item['fld_Content']) ?></p>
+                        <?php endforeach; ?>
+                    <?php else: ?>
+                        <h2>Mission</h2>
+                        <p>To deliver innovative and personalized funeral services through the use of modern technology, eco-friendly practices, and efficient management systems, while providing compassionate support that respects cultural traditions and meets the evolving needs of families.</p>
+                        <h2>Vision</h2>
+                        <p>To be a leading modern funeral service provider that integrates innovation, sustainability, and compassionate care, setting new standards in honoring life and supporting families.</p>
+                    <?php endif; ?>
 
                 </div> <!--end column -->
                 
@@ -1028,31 +1049,246 @@
         </div>
     </div>
 
+    <!-- # deceased registration modal
+    ================================================== -->
+    <div id="deceased-modal" class="login-modal deceased-modal" role="dialog" aria-modal="true" aria-labelledby="deceased-modal-title" hidden>
+        <div class="login-modal__overlay" id="deceased-modal-overlay"></div>
+        <div class="login-modal__box deceased-modal__box">
+            <button class="login-modal__close" id="deceased-modal-close" aria-label="Close">&times;</button>
+
+            <div class="deceased-modal__header">
+                <h2 id="deceased-modal-title" class="login-modal__title">Deceased Registration</h2>
+                <p class="login-modal__subtitle">Señora De Porta Vaga Funeral Homes</p>
+            </div>
+
+            <form class="deceased-modal__form" id="deceased-form" novalidate>
+
+                <!-- Name -->
+                <fieldset class="deceased-modal__fieldset">
+                    <legend>Name of Deceased</legend>
+                    <div class="deceased-modal__row deceased-modal__row--3">
+                        <div class="login-modal__field">
+                            <label for="dec-first">First Name</label>
+                            <input type="text" id="dec-first" name="first_name" placeholder="First" required>
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-middle">Middle Name</label>
+                            <input type="text" id="dec-middle" name="middle_name" placeholder="Middle">
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-last">Last Name</label>
+                            <input type="text" id="dec-last" name="last_name" placeholder="Last" required>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Vital info -->
+                <fieldset class="deceased-modal__fieldset">
+                    <legend>Vital Information</legend>
+                    <div class="deceased-modal__row deceased-modal__row--3">
+                        <div class="login-modal__field">
+                            <label for="dec-dob">Date of Birth</label>
+                            <input type="date" id="dec-dob" name="date_of_birth" required>
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-dod">Date of Death</label>
+                            <input type="date" id="dec-dod" name="date_of_death" required>
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-tod">Time of Death</label>
+                            <input type="time" id="dec-tod" name="time_of_death">
+                        </div>
+                    </div>
+                    <div class="deceased-modal__row deceased-modal__row--vital">
+                        <div class="login-modal__field">
+                            <label for="dec-age">Age</label>
+                            <input type="number" id="dec-age" name="age" placeholder="0" min="0" max="150">
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-sex">Sex</label>
+                            <select id="dec-sex" name="sex">
+                                <option value="">— Select —</option>
+                                <option value="Male">Male</option>
+                                <option value="Female">Female</option>
+                            </select>
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-religion">Religion</label>
+                            <input type="text" id="dec-religion" name="religion" placeholder="e.g. Roman Catholic">
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-citizenship">Citizenship</label>
+                            <input type="text" id="dec-citizenship" name="citizenship" placeholder="e.g. Filipino">
+                        </div>
+                    </div>
+                    <div class="login-modal__field">
+                        <label for="dec-civil">Civil Status</label>
+                        <div class="deceased-modal__radio-group">
+                            <label class="deceased-modal__radio">
+                                <input type="radio" name="civil_status" value="Single"> Single
+                            </label>
+                            <label class="deceased-modal__radio">
+                                <input type="radio" name="civil_status" value="Married"> Married
+                            </label>
+                            <label class="deceased-modal__radio">
+                                <input type="radio" name="civil_status" value="Widowed"> Widowed
+                            </label>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Background -->
+                <fieldset class="deceased-modal__fieldset">
+                    <legend>Background</legend>
+                    <div class="login-modal__field">
+                        <label for="dec-occupation">Occupation</label>
+                        <input type="text" id="dec-occupation" name="occupation" placeholder="Occupation">
+                    </div>
+                    <div class="login-modal__field">
+                        <label for="dec-address">Address &amp; Barangay</label>
+                        <input type="text" id="dec-address" name="address" placeholder="Street, Barangay, City">
+                    </div>
+                    <div class="deceased-modal__row deceased-modal__row--2">
+                        <div class="login-modal__field">
+                            <label for="dec-father">Name of Father</label>
+                            <input type="text" id="dec-father" name="father_name" placeholder="Father's full name">
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-mother">Name of Mother <span class="deceased-modal__note">(Maiden Name)</span></label>
+                            <input type="text" id="dec-mother" name="mother_name" placeholder="Mother's maiden name">
+                        </div>
+                    </div>
+                    <div class="login-modal__field">
+                        <label for="dec-cemetery">Address and Place of Cemetery</label>
+                        <input type="text" id="dec-cemetery" name="cemetery" placeholder="Cemetery name and address">
+                    </div>
+                </fieldset>
+
+                <!-- Informant -->
+                <fieldset class="deceased-modal__fieldset">
+                    <legend>Informant Details</legend>
+                    <div class="deceased-modal__row deceased-modal__row--2">
+                        <div class="login-modal__field">
+                            <label for="dec-informant">Informant</label>
+                            <input type="text" id="dec-informant" name="informant" placeholder="Full name" required>
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-relationship">Relationship to Deceased</label>
+                            <input type="text" id="dec-relationship" name="relationship" placeholder="e.g. Son, Daughter">
+                        </div>
+                    </div>
+                    <div class="deceased-modal__row deceased-modal__row--2">
+                        <div class="login-modal__field">
+                            <label for="dec-inf-address">Address</label>
+                            <input type="text" id="dec-inf-address" name="informant_address" placeholder="Informant's address">
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-contact">Contact No.</label>
+                            <input type="tel" id="dec-contact" name="contact_number" placeholder="09XX XXX XXXX">
+                        </div>
+                    </div>
+                </fieldset>
+
+                <fieldset class="deceased-modal__fieldset">
+                    <legend>Package</legend>
+                    <div class="deceased-modal__row deceased-modal__row--2">
+                        <div class="login-modal__field">
+                            <label for="package">Package</label>
+                            <input type="text" id="package" name="package" readonly>
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="package-price">Price</label>
+                            <input type="text" id="package-price" name="package_price" readonly>
+                        </div>
+                    </div>
+                </fieldset>
+
+                <!-- Payment receipt -->
+                <fieldset class="deceased-modal__fieldset">
+                    <legend>Payment</legend>
+                    <div class="deceased-modal__payment-wrap">
+
+                        <div class="deceased-modal__qr-block">
+                            <p class="deceased-modal__qr-label">Scan to pay via InstaPay</p>
+                            <div class="deceased-modal__qr-frame">
+                                <button type="button" class="deceased-modal__qr-btn" id="qr-open" aria-label="View larger QR code">
+                                    <img src="images/qr-instapay.png" alt="InstaPay QR Code" class="deceased-modal__qr-img">
+                                    <span class="deceased-modal__qr-hint">Click to enlarge</span>
+                                </button>
+                            </div>
+                            <p class="deceased-modal__qr-note">After payment, attach your receipt below.</p>
+                        </div>
+
+                        <div class="deceased-modal__upload-block">
+                            <div class="login-modal__field">
+                                <label for="payment">Attach Receipt <span class="deceased-modal__note">(JPG, PNG or PDF — max 5MB)</span></label>
+                                <div class="deceased-modal__upload-wrap" id="upload-wrap">
+                                    <input type="file" id="payment" name="payment" accept=".jpg,.jpeg,.png,.pdf" required>
+                                    <div class="deceased-modal__upload-ui" id="upload-ui">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+                                            <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+                                            <polyline points="17 8 12 3 7 8"/>
+                                            <line x1="12" y1="3" x2="12" y2="15"/>
+                                        </svg>
+                                        <span id="upload-label">Click or drag a file here</span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                </fieldset>
+
+                <div class="login-modal__status" id="deceased-status" aria-live="polite"></div>
+
+                <div class="deceased-modal__actions">
+                    <button type="button" class="btn deceased-modal__btn--cancel" id="deceased-cancel">Cancel</button>
+                    <button type="submit" class="btn deceased-modal__btn--submit" id="deceased-submit">Submit Registration</button>
+                </div>
+
+            </form>
+        </div>
+    </div>
+
+    <!-- # QR lightbox
+    ================================================== -->
+    <div id="qr-lightbox" class="qr-lightbox" hidden aria-modal="true" role="dialog" aria-label="QR Code enlarged">
+        <div class="qr-lightbox__overlay" id="qr-lightbox-overlay"></div>
+        <div class="qr-lightbox__box">
+            <button class="qr-lightbox__close" id="qr-lightbox-close" aria-label="Close">&times;</button>
+            <img src="images/qr-instapay.png" alt="InstaPay QR Code" class="qr-lightbox__img">
+            <p class="qr-lightbox__caption">Scan with your banking app to pay via InstaPay</p>
+        </div>
+    </div>
+
     <script>
     (function () {
-            const modalLogin   = document.getElementById('login-modal');
-            const openBtnLogin = document.getElementById('login-btn');
+            const modalLogin    = document.getElementById('login-modal');
+            const openBtnLogin  = document.getElementById('login-btn');
             const closeBtnLogin = document.getElementById('login-modal-close');
-            const overlayLogin = document.getElementById('login-modal-overlay');
+            const overlayLogin  = document.getElementById('login-modal-overlay');
 
             function openLoginModal() {
+                if (!modalLogin) return;
                 modalLogin.hidden = false;
                 document.body.style.overflow = 'hidden';
-                closeBtnLogin.focus();
+                if (closeBtnLogin) closeBtnLogin.focus();
             }
+            window.openLoginModal = openLoginModal;
 
             function closeLoginModal() {
+                if (!modalLogin) return;
                 modalLogin.hidden = true;
                 document.body.style.overflow = '';
-                openBtnLogin.focus();
+                if (openBtnLogin) openBtnLogin.focus();
             }
 
-            openBtnLogin.addEventListener('click', function (e) { e.preventDefault(); openLoginModal(); });
-            closeBtnLogin.addEventListener('click', closeLoginModal);
-            overlayLogin.addEventListener('click', closeLoginModal);
+            if (openBtnLogin)  openBtnLogin.addEventListener('click',  function (e) { e.preventDefault(); openLoginModal(); });
+            if (closeBtnLogin) closeBtnLogin.addEventListener('click', closeLoginModal);
+            if (overlayLogin)  overlayLogin.addEventListener('click',  closeLoginModal);
 
             document.addEventListener('keydown', function (e) {
-                if (e.key === 'Escape' && !modalLogin.hidden) closeLoginModal();
+                if (e.key === 'Escape' && modalLogin && !modalLogin.hidden) closeLoginModal();
             });
 
             // ── Forgot password flow ──────────────────────────────────────
@@ -1279,6 +1515,115 @@
                     resetSubmit.disabled = false;
                     resetSubmit.textContent = 'Update Password';
                 }
+            });
+
+            // ── Package items → open deceased registration modal ──────────
+            var isLoggedIn = <?php echo session()->get('isLoggedIn') ? 'true' : 'false'; ?>;
+
+            document.querySelectorAll('.menu-list__item').forEach(function (item) {
+                item.style.cursor = 'pointer';
+                item.addEventListener('click', function () {
+                    if (!isLoggedIn) {
+                        openLoginModal();
+                        return;
+                    }
+                    var packageName = item.querySelector('h4') ? item.querySelector('h4').textContent.trim() : '';
+                    var priceEl     = item.querySelector('.menu-list__item-price');
+                    var price       = priceEl ? priceEl.textContent.trim() : '';
+                    document.getElementById('package').value       = packageName;
+                    document.getElementById('package-price').value = price;
+                    showModal(document.getElementById('deceased-modal'));
+                });
+            });
+
+            // ── Deceased registration modal ───────────────────────────────
+            const deceasedModal   = document.getElementById('deceased-modal');
+            const deceasedOverlay = document.getElementById('deceased-modal-overlay');
+            const deceasedClose   = document.getElementById('deceased-modal-close');
+            const deceasedCancel  = document.getElementById('deceased-cancel');
+            const deceasedStatus  = document.getElementById('deceased-status');
+            const deceasedSubmit  = document.getElementById('deceased-submit');
+
+            // expose opener globally so other parts of the page can call it
+            window.openDeceasedModal = function () { showModal(deceasedModal); };
+
+            // file upload UI
+            var fileInput   = document.getElementById('payment');
+            var uploadLabel = document.getElementById('upload-label');
+            var uploadUi    = document.getElementById('upload-ui');
+
+            fileInput.addEventListener('change', function () {
+                uploadLabel.textContent = this.files[0] ? this.files[0].name : 'Click or drag a file here';
+                uploadUi.classList.toggle('has-file', !!this.files[0]);
+            });
+
+            ['dragover', 'dragleave', 'drop'].forEach(function (evt) {
+                document.getElementById('upload-wrap').addEventListener(evt, function (e) {
+                    e.preventDefault();
+                    if (evt === 'dragover') uploadUi.classList.add('drag-over');
+                    if (evt === 'dragleave') uploadUi.classList.remove('drag-over');
+                    if (evt === 'drop') {
+                        uploadUi.classList.remove('drag-over');
+                        fileInput.files = e.dataTransfer.files;
+                        uploadLabel.textContent = fileInput.files[0] ? fileInput.files[0].name : 'Click or drag a file here';
+                        uploadUi.classList.toggle('has-file', !!fileInput.files[0]);
+                    }
+                });
+            });
+
+            deceasedClose.addEventListener('click',   function () { hideModal(deceasedModal); });
+            deceasedOverlay.addEventListener('click', function () { hideModal(deceasedModal); });
+            deceasedCancel.addEventListener('click',  function () { hideModal(deceasedModal); });
+
+            document.getElementById('deceased-form').addEventListener('submit', async function (e) {
+                e.preventDefault();
+                deceasedSubmit.disabled = true;
+                deceasedSubmit.textContent = 'Submitting…';
+                setStatus(deceasedStatus, '', '');
+
+                const form     = e.target;
+                const formData = new FormData(form);
+                formData.set('user_id', '<?php echo (int) session()->get('user_id'); ?>');
+
+                try {
+                    const res  = await fetch('/api/deceased/register', {
+                        method: 'POST',
+                        body  : formData
+                    });
+                    const json = await res.json();
+
+                    if (json.status === 'success') {
+                        setStatus(deceasedStatus, 'Registration submitted successfully.', 'success');
+                        form.reset();
+                        setTimeout(function () { hideModal(deceasedModal); }, 1800);
+                    } else {
+                        const msg = typeof json.message === 'object'
+                            ? Object.values(json.message).join(' ')
+                            : json.message;
+                        setStatus(deceasedStatus, msg, 'error');
+                    }
+                } catch (err) {
+                    setStatus(deceasedStatus, 'Something went wrong. Please try again.', 'error');
+                } finally {
+                    deceasedSubmit.disabled = false;
+                    deceasedSubmit.textContent = 'Submit Registration';
+                }
+            });
+
+            // ── QR lightbox ───────────────────────────────────────────────
+            var qrLightbox = document.getElementById('qr-lightbox');
+            document.getElementById('qr-open').addEventListener('click', function () {
+                qrLightbox.hidden = false;
+                document.getElementById('qr-lightbox-close').focus();
+            });
+            document.getElementById('qr-lightbox-close').addEventListener('click', function () {
+                qrLightbox.hidden = true;
+            });
+            document.getElementById('qr-lightbox-overlay').addEventListener('click', function () {
+                qrLightbox.hidden = true;
+            });
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && !qrLightbox.hidden) qrLightbox.hidden = true;
             });
 
             // ── Theme toggle ──────────────────────────────────────────────

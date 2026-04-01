@@ -5600,3 +5600,533 @@ body,
 .login-modal__otp-input {
     transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease;
 }
+
+
+/* =================================================================== 
+ * # DECEASED REGISTRATION MODAL
+ * ------------------------------------------------------------------- */
+
+.deceased-modal__box {
+    max-width : 72rem;
+    max-height: 90vh;
+    overflow-y: auto;
+    padding   : 3.6rem 3.6rem 3.2rem;
+    scrollbar-width: thin;
+    scrollbar-color: var(--theme-border) transparent;
+}
+
+.deceased-modal__header {
+    text-align   : center;
+    margin-bottom: 3.2rem;
+}
+
+.deceased-modal__form {
+    display       : flex;
+    flex-direction: column;
+    gap           : 2.4rem;
+}
+
+/* fieldsets */
+.deceased-modal__fieldset {
+    border       : 1px solid var(--theme-border);
+    border-radius: 0.6rem;
+    padding      : 2rem 2rem 1.6rem;
+    margin       : 0;
+}
+
+.deceased-modal__fieldset legend {
+    font-size     : 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color         : var(--theme-accent);
+    padding       : 0 0.8rem;
+    font-weight   : 600;
+}
+
+[data-theme="light"] .deceased-modal__fieldset legend {
+    color: var(--theme-brand);
+}
+
+/* grid rows */
+.deceased-modal__row {
+    display: grid;
+    gap    : 1.6rem;
+}
+
+.deceased-modal__row--2 { grid-template-columns: 1fr 1fr; }
+.deceased-modal__row--3 { grid-template-columns: 1fr 1fr 1fr; }
+
+.deceased-modal__fieldset .login-modal__field + .login-modal__field,
+.deceased-modal__fieldset .deceased-modal__row + .login-modal__field,
+.deceased-modal__fieldset .login-modal__field + .deceased-modal__row,
+.deceased-modal__fieldset .deceased-modal__row + .deceased-modal__row {
+    margin-top: 1.4rem;
+}
+
+/* select styling */
+.deceased-modal__form select {
+    background  : var(--theme-bg-elevated);
+    border      : 1px solid var(--theme-border);
+    border-radius: 0.4rem;
+    color       : var(--theme-heading);
+    font-size   : 1.5rem;
+    padding     : 1.2rem 1.4rem;
+    width       : 100%;
+    cursor      : pointer;
+    transition  : border-color 0.2s;
+    font-family : inherit;
+    appearance  : none;
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%2393e9be' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+    background-repeat  : no-repeat;
+    background-position: right 1.2rem center;
+    padding-right: 3.2rem;
+}
+
+[data-theme="light"] .deceased-modal__form select {
+    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23366b5b' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+}
+
+.deceased-modal__form select:focus {
+    outline     : none;
+    border-color: var(--theme-accent);
+    box-shadow  : 0 0 0 3px rgba(147,233,190,0.15);
+}
+
+[data-theme="light"] .deceased-modal__form select:focus {
+    border-color: var(--theme-brand);
+    box-shadow  : 0 0 0 3px rgba(54,107,91,0.15);
+}
+
+.deceased-modal__note {
+    font-size  : 1.1rem;
+    color      : var(--theme-text-muted);
+    font-style : italic;
+    font-weight: 400;
+}
+
+/* actions row */
+.deceased-modal__actions {
+    display        : flex;
+    justify-content: flex-end;
+    gap            : 1.2rem;
+    padding-top    : 0.8rem;
+}
+
+.deceased-modal__btn--cancel {
+    background  : transparent;
+    border      : 1px solid var(--theme-border);
+    color       : var(--theme-text);
+}
+
+.deceased-modal__btn--cancel:hover {
+    border-color: var(--theme-accent);
+    color       : var(--theme-accent);
+}
+
+[data-theme="light"] .deceased-modal__btn--cancel:hover {
+    border-color: var(--theme-brand);
+    color       : var(--theme-brand);
+}
+
+.deceased-modal__btn--submit {
+    background: var(--theme-accent);
+    color     : var(--theme-accent-text);
+    border    : none;
+    min-width : 18rem;
+}
+
+.deceased-modal__btn--submit:hover {
+    background: var(--theme-accent-dark);
+}
+
+[data-theme="light"] .deceased-modal__btn--submit {
+    background: var(--theme-brand);
+    color     : #ffffff;
+}
+
+[data-theme="light"] .deceased-modal__btn--submit:hover {
+    background: var(--theme-brand-dark);
+}
+
+/* responsive */
+@media screen and (max-width: 700px) {
+    .deceased-modal__row--3 { grid-template-columns: 1fr 1fr; }
+}
+
+@media screen and (max-width: 500px) {
+    .deceased-modal__row--2,
+    .deceased-modal__row--3 { grid-template-columns: 1fr; }
+
+    .deceased-modal__box    { padding: 2.4rem 1.8rem; }
+
+    .deceased-modal__actions { flex-direction: column; }
+    .deceased-modal__btn--submit,
+    .deceased-modal__btn--cancel { width: 100%; text-align: center; }
+}
+
+
+/* package items — clickable to open deceased modal */
+.menu-list__item {
+    cursor    : pointer;
+    transition: background 0.2s, transform 0.15s;
+    border-radius: 0.4rem;
+}
+
+.menu-list__item:hover {
+    background: rgba(147, 233, 190, 0.08);
+    transform : translateX(4px);
+}
+
+[data-theme="light"] .menu-list__item:hover {
+    background: rgba(54, 107, 91, 0.07);
+}
+
+
+/* deceased modal — vital info 4-col row & civil status radios */
+.deceased-modal__row--vital {
+    display              : grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    gap                  : 1.6rem;
+    margin-top           : 1.4rem;
+}
+
+.deceased-modal__radio-group {
+    display    : flex;
+    gap        : 2rem;
+    align-items: center;
+    padding    : 1rem 0 0.4rem;
+    flex-wrap  : wrap;
+}
+
+.deceased-modal__radio {
+    display    : flex;
+    align-items: center;
+    gap        : 0.6rem;
+    font-size  : 1.4rem;
+    color      : var(--theme-text);
+    cursor     : pointer;
+    user-select: none;
+}
+
+.deceased-modal__radio input[type="radio"] {
+    accent-color: var(--theme-accent);
+    width : 1.6rem;
+    height: 1.6rem;
+    cursor: pointer;
+}
+
+[data-theme="light"] .deceased-modal__radio input[type="radio"] {
+    accent-color: var(--theme-brand);
+}
+
+@media screen and (max-width: 700px) {
+    .deceased-modal__row--vital {
+        grid-template-columns: 1fr 1fr;
+    }
+}
+
+@media screen and (max-width: 500px) {
+    .deceased-modal__row--vital {
+        grid-template-columns: 1fr;
+    }
+}
+
+
+/* deceased modal — fix label/input vertical alignment across grid columns */
+.deceased-modal__row .login-modal__field {
+    display       : flex;
+    flex-direction: column;
+    justify-content: flex-end;  /* push input to bottom so all inputs align */
+}
+
+.deceased-modal__row .login-modal__field label {
+    margin-bottom: 0.6rem;
+}
+
+.deceased-modal__row--3,
+.deceased-modal__row--2,
+.deceased-modal__row--vital {
+    align-items: end;  /* baseline-align all cells */
+}
+
+
+/* package input — read-only display */
+#package[readonly],
+#package-price[readonly] {
+    opacity     : 1;
+    cursor      : default;
+    border-color: var(--theme-border);
+    color       : var(--theme-heading);
+    background  : var(--theme-bg-elevated);
+}
+
+
+/* =================================================================== 
+ * # PAYMENT RECEIPT UPLOAD
+ * ------------------------------------------------------------------- */
+
+.deceased-modal__upload-wrap {
+    position: relative;
+}
+
+.deceased-modal__upload-wrap input[type="file"] {
+    position : absolute;
+    inset    : 0;
+    opacity  : 0;
+    cursor   : pointer;
+    width    : 100%;
+    height   : 100%;
+    z-index  : 2;
+}
+
+.deceased-modal__upload-ui {
+    display        : flex;
+    flex-direction : column;
+    align-items    : center;
+    justify-content: center;
+    gap            : 0.8rem;
+    padding        : 2.4rem 1.6rem;
+    border         : 2px dashed var(--theme-border);
+    border-radius  : 0.6rem;
+    color          : var(--theme-text-muted);
+    background     : var(--theme-bg-elevated);
+    transition     : border-color 0.2s, background 0.2s, color 0.2s;
+    text-align     : center;
+    font-size      : 1.4rem;
+    pointer-events : none;
+}
+
+.deceased-modal__upload-wrap:hover .deceased-modal__upload-ui,
+.deceased-modal__upload-ui.drag-over {
+    border-color: var(--theme-accent);
+    background  : rgba(147,233,190,0.06);
+    color       : var(--theme-accent);
+}
+
+[data-theme="light"] .deceased-modal__upload-wrap:hover .deceased-modal__upload-ui,
+[data-theme="light"] .deceased-modal__upload-ui.drag-over {
+    border-color: var(--theme-brand);
+    background  : rgba(54,107,91,0.05);
+    color       : var(--theme-brand);
+}
+
+.deceased-modal__upload-ui.has-file {
+    border-style: solid;
+    border-color: var(--theme-accent);
+    color       : var(--theme-accent);
+}
+
+[data-theme="light"] .deceased-modal__upload-ui.has-file {
+    border-color: var(--theme-brand);
+    color       : var(--theme-brand);
+}
+
+
+/* =================================================================== 
+ * # PAYMENT QR + UPLOAD LAYOUT
+ * ------------------------------------------------------------------- */
+
+.deceased-modal__payment-wrap {
+    display    : grid;
+    grid-template-columns: auto 1fr;
+    gap        : 2.4rem;
+    align-items: start;
+}
+
+.deceased-modal__qr-block {
+    display       : flex;
+    flex-direction: column;
+    align-items   : center;
+    gap           : 0.8rem;
+    flex-shrink   : 0;
+}
+
+.deceased-modal__qr-label {
+    font-size  : 1.2rem;
+    text-transform: uppercase;
+    letter-spacing: 0.08em;
+    color      : var(--theme-text-muted);
+    margin     : 0;
+}
+
+.deceased-modal__qr-frame {
+    background   : #ffffff;
+    border-radius: 0.8rem;
+    padding      : 1rem;
+    border       : 2px solid var(--theme-border);
+    line-height  : 0;
+}
+
+.deceased-modal__qr-img {
+    width     : 14rem;
+    height    : 14rem;
+    object-fit: contain;
+    display   : block;
+}
+
+.deceased-modal__qr-note {
+    font-size  : 1.2rem;
+    color      : var(--theme-text-muted);
+    text-align : center;
+    margin     : 0;
+    max-width  : 14rem;
+    line-height: 1.5;
+}
+
+.deceased-modal__upload-block {
+    display       : flex;
+    flex-direction: column;
+    justify-content: center;
+    height        : 100%;
+}
+
+@media screen and (max-width: 560px) {
+    .deceased-modal__payment-wrap {
+        grid-template-columns: 1fr;
+    }
+
+    .deceased-modal__qr-block {
+        align-items: center;
+    }
+
+    .deceased-modal__qr-img {
+        width : 12rem;
+        height: 12rem;
+    }
+}
+
+
+/* =================================================================== 
+ * # QR LIGHTBOX
+ * ------------------------------------------------------------------- */
+
+.deceased-modal__qr-btn {
+    background      : none;
+    border          : none;
+    padding         : 0;
+    cursor          : pointer;
+    display         : flex;
+    flex-direction  : column;
+    align-items     : center;
+    gap             : 0.6rem;
+    position        : relative;
+    outline         : none;
+    -webkit-tap-highlight-color: transparent;
+}
+
+.deceased-modal__qr-btn:hover,
+.deceased-modal__qr-btn:focus {
+    background: none;
+    color      : inherit;
+}
+
+.deceased-modal__qr-btn:hover .deceased-modal__qr-img {
+    transform: scale(1.04);
+}
+
+.deceased-modal__qr-img {
+    transition: transform 0.2s;
+}
+
+.deceased-modal__qr-hint {
+    font-size  : 1.1rem;
+    color      : var(--theme-text-muted);
+    letter-spacing: 0.04em;
+}
+
+/* lightbox */
+.qr-lightbox {
+    position: fixed;
+    inset   : 0;
+    z-index : 10000;
+    display : flex;
+    align-items    : center;
+    justify-content: center;
+    padding : 2rem;
+}
+
+.qr-lightbox[hidden] { display: none; }
+
+.qr-lightbox__overlay {
+    position  : absolute;
+    inset     : 0;
+    background: rgba(0,0,0,0.82);
+    backdrop-filter: blur(6px);
+}
+
+.qr-lightbox__box {
+    position     : relative;
+    z-index      : 1;
+    background   : #ffffff;
+    border-radius: 1.2rem;
+    padding      : 2.4rem;
+    display      : flex;
+    flex-direction: column;
+    align-items  : center;
+    gap          : 1.6rem;
+    animation    : modal-in 0.2s ease;
+    max-width    : 42rem;
+    width        : 100%;
+}
+
+.qr-lightbox__close {
+    position  : absolute;
+    top       : 1rem;
+    right     : 1.2rem;
+    background: none;
+    border    : none;
+    font-size : 2.4rem;
+    line-height: 1;
+    cursor    : pointer;
+    color     : #555;
+    padding   : 0.4rem 0.8rem;
+}
+
+.qr-lightbox__close:hover { color: #000; }
+
+.qr-lightbox__img {
+    width    : 100%;
+    max-width: 32rem;
+    height   : auto;
+    display  : block;
+}
+
+.qr-lightbox__caption {
+    font-size  : 1.4rem;
+    color      : #444;
+    text-align : center;
+    margin     : 0;
+}
+
+/* =================================================================== 
+ * # CMS INTRO IMAGE OVERRIDES
+ * ------------------------------------------------------------------- */
+
+/* secondary image (logo) — constrain to a sensible logo size */
+.intro-block-content__pic img {
+    aspect-ratio: unset;
+    width       : auto;
+    max-width   : 18rem;
+    max-height  : 14rem;
+    object-fit  : contain;
+    display     : block;
+    margin-bottom: 2rem;
+}
+
+/* primary image — keep full width but cap height so it doesn't overflow */
+.intro-pic-primary img {
+    width       : 100%;
+    max-height  : 72vh;
+    object-fit  : injerit;
+    object-position: center;
+}
+
+
+/* CMS intro title type */
+.intro-block-content__cms-title {
+    font-size    : 2rem;
+    color        : var(--theme-heading);
+    margin-bottom: 1.2rem;
+    margin-top   : 0.8rem;
+    line-height  : 1.3;
+}

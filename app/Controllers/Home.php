@@ -2,6 +2,12 @@
 
 namespace App\Controllers;
 use App\Models\Accountmodel;
+use App\Models\CmsIntroContentModel;
+use App\Models\CmsIntroImageModel;
+use App\Models\CmsIntroSocialsModel;
+use App\Models\CmsAboutContentModel;
+use App\Models\CmsAboutMissionVisionModel;
+use App\Models\CmsAboutImageModel;
 
 class Home extends BaseController
 {
@@ -42,19 +48,50 @@ class Home extends BaseController
                         ];
                         $session->set($sessionData);
                         $session->setFlashdata('success', 'Successfully Logged in');
-                        return view('index', $data);
                     } else {
                         $session->setFlashdata('error', 'Invalid username or password');
-                        return view('index', $data);    
                     }
                 }
             }
         }
         catch (Exception $e){
-            $session = session();
             $session->setFlashdata('error', 'An error occured: ' . $e->getMessage());
         }
-        return view('index');
+
+        // load CMS data directly from models
+        $data['cms_content'] = (new CmsIntroContentModel())
+            ->where('fld_Status', 'Active')
+            ->orderBy('fld_Sort', 'ASC')
+            ->findAll();
+        $data['cms_socials'] = (new CmsIntroSocialsModel())->where('fld_Status', 'Active')->findAll();
+
+        $images = (new CmsIntroImageModel())->where('fld_Status', 'Active')->findAll();
+        foreach ($images as &$img) {
+            if (!empty($img['fld_Image'])) {
+                $img['fld_Image'] = base64_encode($img['fld_Image']);
+            }
+        }
+        $data['cms_images'] = $images;
+
+        $data['cms_about'] = (new CmsAboutContentModel())
+            ->where('fld_Status', 'Active')
+            ->orderBy('fld_Sort', 'ASC')
+            ->findAll();
+
+        $data['cms_mission_vision'] = (new CmsAboutMissionVisionModel())
+            ->where('fld_Status', 'Active')
+            ->orderBy('fld_Sort', 'ASC')
+            ->findAll();
+
+        $aboutImages = (new CmsAboutImageModel())->where('fld_Status', 'Active')->findAll();
+        foreach ($aboutImages as &$img) {
+            if (!empty($img['fld_Image'])) {
+                $img['fld_Image'] = base64_encode($img['fld_Image']);
+            }
+        }
+        $data['cms_about_images'] = $aboutImages;
+
+        return view('index', $data);
     }
 
     public function logout() {

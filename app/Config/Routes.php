@@ -10,12 +10,23 @@ $routes->post('/', 'Home::index');
 $routes->get('/Home/logout', 'Home::logout');
 
 $routes->options('(:any)', 'Home::corss');
+$routes->options('api/(:any)', function() {
+    return service('response')
+        ->setStatusCode(204)
+        ->setHeader('Access-Control-Allow-Origin', 'http://localhost:3000')
+        ->setHeader('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS')
+        ->setHeader('Access-Control-Allow-Headers', 'Content-Type, Authorization, X-Requested-With')
+        ->setHeader('Access-Control-Allow-Credentials', 'true');
+});
 
 $routes->group('api', function($routes) {
     $routes->post('signIn', 'API\SignIn::verify');
     $routes->post('forgotPassword/otp', 'API\ForgotPassword::OTP');
     $routes->post('forgotPassword/resets', 'API\ForgotPassword::resets');
     $routes->post('deceased/register', 'API\Deceased::register');
+    $routes->get('deceased/all', 'API\Deceased::getAll');
+    $routes->get('deceased/payment/(:num)', 'API\Deceased::payment/$1');
+    $routes->get('deceased/obituary/(:num)', 'API\Deceased::obituary/$1');
     $routes->get('cms/intro/content', 'API\CmsIntro::content');
     $routes->get('cms/intro/image', 'API\CmsIntro::image');
     $routes->get('cms/intro/socials', 'API\CmsIntro::socials');

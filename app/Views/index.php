@@ -73,6 +73,7 @@
                         <li><a class="smoothscroll" href="#gallery">Gallery</a></li>
                         <li><a class="smoothscroll" href="#casket">Casket</a></li>
                         <li><a class="smoothscroll" href="#gallery">Facilities & Amenities</a></li>
+                        <li><a class="smoothscroll" href="#testimonials">Obituaries</a></li>
                         <li><a class="smoothscroll" href="#contact">Contact Us</a></li>
                         <?php if (session()->get('isLoggedIn')): ?>
                             <li><a class="smoothscroll" href="#account">My Account</a></li>
@@ -122,77 +123,78 @@
 
         <!-- # intro
         ================================================== -->
-        <section id="intro" class="container s-intro target-section">
+        <?php
+            $introBgStyle = !empty($cms_images[0])
+                ? 'style="background-image: url(\'data:image/jpeg;base64,' . $cms_images[0]['fld_Image'] . '\')"'
+                : 'style="background-image: url(\'images/intro-try2.png\')"';
+        ?>
+        <section id="intro" class="s-intro target-section intro-has-cover" <?= $introBgStyle ?>>
 
-            <div class="grid-block s-intro__content">
+            <!-- original content grid -->
+            <div class="container s-intro__below">
+                <div class="grid-block s-intro__content">
 
-                <div class="intro-header">
-                    <?php
-                        $titleItem = array_values(array_filter($cms_content ?? [], fn($i) => $i['fld_Type'] === 'Title'));
-                    ?>
-                    <div class="intro-header__overline"><?= !empty($titleItem[0]) ? esc($titleItem[0]['fld_Content']) : 'Welcome to' ?></div>
-                    <h1 class="intro-header__big-type">
-                        <?= !empty($titleItem[1]) ? esc($titleItem[1]['fld_Content']) : 'Sñra de <br>Porta Vaga' ?>
-                    </h1>
-                </div> <!-- end intro-header -->
+                    <div class="intro-header">
+                        <?php
+                            $titleItems = array_values(array_filter($cms_content ?? [], fn($i) => strtolower($i['fld_Type']) === 'title'));
+                        ?>
+                        <div class="intro-header__overline"><?= !empty($titleItems[0]) && $titleItems == "Title" ? esc($titleItems[0]['fld_Content']) : 'Welcome to' ?></div>
+                        <h1 class="intro-header__big-type">
+                            <?= !empty($titleItems[1]) && $titleItems == "Title" ? esc($titleItems[1]['fld_Content']) : 'Sñra de Porta Vaga' ?>
+                        </h1>
+                    </div> <!-- end intro-header -->
 
-                <figure class="intro-pic-primary">
-                    <?php if (!empty($cms_images[0])): ?>
-                        <img src="data:image/jpeg;base64,<?= $cms_images[0]['fld_Image'] ?>"
-                             alt="<?= esc($cms_images[0]['fld_Alt']) ?>">
-                    <?php else: ?>
-                        <img src="images/intro-try2.png" alt="">
-                    <?php endif; ?>
-                </figure> <!-- end intro-pic-primary -->    
-                    
-                <div class="intro-block-content">
+                    <div class="intro-block-content">
 
-                    <figure class="intro-block-content__pic">
-                        <?php if (!empty($cms_images[1])): ?>
-                            <img src="data:image/jpeg;base64,<?= $cms_images[1]['fld_Image'] ?>"
-                                 alt="<?= esc($cms_images[1]['fld_Alt']) ?>">
-                        <?php else: ?>
-                            <img src="images/intro-try3.png" alt="">
-                        <?php endif; ?>
-                    </figure> <!-- end intro-pic-secondary -->   
+                        <figure class="intro-block-content__pic">
+                            <?php if (!empty($cms_images[1])): ?>
+                                <img src="data:image/jpeg;base64,<?= $cms_images[1]['fld_Image'] ?>"
+                                     alt="<?= esc($cms_images[1]['fld_Alt']) ?>">
+                            <?php else: ?>
+                                <img src="images/intro-try3.png" alt="">
+                            <?php endif; ?>
+                        </figure>
 
-                    <div class="intro-block-content__text-wrap">
-                        <?php if (!empty($cms_content)): ?>
-                            <?php foreach ($cms_content as $item): ?>
-                                <?php if ($item['fld_Type'] === 'Paragraph'): ?>
+                        <div class="intro-block-content__text-wrap">
+                            <?php
+                                $paraItems = array_values(array_filter($cms_content ?? [], fn($i) => strtolower($i['fld_Type']) === 'paragraph'));
+                            ?>
+                            <?php if (!empty($paraItems)): ?>
+                                <?php foreach ($paraItems as $item): ?>
                                     <p class="intro-block-content__text"><?= esc($item['fld_Content']) ?></p>
-                                <?php endif; ?>
-                            <?php endforeach; ?>
-                        <?php else: ?>
-                            <p class="intro-block-content__text">
-                                Lorem ipsum dolor sit amet consectetur adipisicing elit.
-                            </p>
-                        <?php endif; ?>                        
-                        <ul class="intro-block-content__social">
-                            <?php if (!empty($cms_socials)): ?>
-                                <?php foreach ($cms_socials as $social): ?>
-                                    <li><a href="<?= esc($social['fld_URL']) ?>" target="_blank" rel="noopener"><?= esc($social['fld_SocialMedia']) ?></a></li>
                                 <?php endforeach; ?>
                             <?php else: ?>
-                                <li><a href="#0">FB</a></li>
-                                <li><a href="#0">IG</a></li>
+                                <p class="intro-block-content__text">
+                                    Lorem ipsum dolor sit amet consectetur adipisicing elit.
+                                </p>
                             <?php endif; ?>
-                        </ul>
-                    </div> <!-- end intro-block-content__social -->   
 
-                </div> <!-- end intro-block-content -->
-
-                <div class="intro-scroll">
-                    <a class="smoothscroll" href="#about">                            
-                        <span class="intro-scroll__circle-text"></span>
-                        <span class="intro-scroll__text u-screen-reader-text">Scroll Down</span>
-                        <div class="intro-scroll__icon">
-                            <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m5.214 14.522s4.505 4.502 6.259 6.255c.146.147.338.22.53.22s.384-.073.53-.22c1.754-1.752 6.249-6.244 6.249-6.244.144-.144.216-.334.217-.523 0-.193-.074-.386-.221-.534-.293-.293-.766-.294-1.057-.004l-4.968 4.968v-14.692c0-.414-.336-.75-.75-.75s-.75.336-.75.75v14.692l-4.979-4.978c-.289-.289-.761-.287-1.054.006-.148.148-.222.341-.221.534 0 .189.071.377.215.52z" fill-rule="nonzero"/></svg>
+                            <ul class="intro-block-content__social">
+                                <?php if (!empty($cms_socials)): ?>
+                                    <?php foreach ($cms_socials as $social): ?>
+                                        <li><a href="<?= esc($social['fld_URL']) ?>" target="_blank" rel="noopener"><?= esc($social['fld_SocialMedia']) ?></a></li>
+                                    <?php endforeach; ?>
+                                <?php else: ?>
+                                    <li><a href="#0">FB</a></li>
+                                    <li><a href="#0">IG</a></li>
+                                <?php endif; ?>
+                            </ul>
                         </div>
-                    </a>
-                </div> <!-- end intro-scroll -->
 
-            </div> <!-- grid-block -->            
+                    </div> <!-- end intro-block-content -->
+
+                    <div class="intro-scroll">
+                        <a class="smoothscroll" href="#about">
+                            <span class="intro-scroll__circle-text"></span>
+                            <span class="intro-scroll__text u-screen-reader-text">Scroll Down</span>
+                            <div class="intro-scroll__icon">
+                                <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m5.214 14.522s4.505 4.502 6.259 6.255c.146.147.338.22.53.22s.384-.073.53-.22c1.754-1.752 6.249-6.244 6.249-6.244.144-.144.216-.334.217-.523 0-.193-.074-.386-.221-.534-.293-.293-.766-.294-1.057-.004l-4.968 4.968v-14.692c0-.414-.336-.75-.75-.75s-.75.336-.75.75v14.692l-4.979-4.978c-.289-.289-.761-.287-1.054.006-.148.148-.222.341-.221.534 0 .189.071.377.215.52z" fill-rule="nonzero"/></svg>
+                            </div>
+                        </a>
+                    </div>
+
+                </div> <!-- end grid-block -->
+            </div> <!-- end s-intro__below -->
 
         </section> <!-- end s-intro -->
 
@@ -265,19 +267,19 @@
                         <ul class="tab-nav__list"> 
                             <li>
                                 <a href="tab-signature-blends">
-                                    <span>Test 1</span>
+                                    <span>Indigent Package</span>
                                     <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m14.523 18.787s4.501-4.505 6.255-6.26c.146-.146.219-.338.219-.53s-.073-.383-.219-.53c-1.753-1.754-6.255-6.258-6.255-6.258-.144-.145-.334-.217-.524-.217-.193 0-.385.074-.532.221-.293.292-.295.766-.004 1.056l4.978 4.978h-14.692c-.414 0-.75.336-.75.75s.336.75.75.75h14.692l-4.979 4.979c-.289.289-.286.762.006 1.054.148.148.341.222.533.222.19 0 .378-.072.522-.215z" fill-rule="nonzero"/></svg>
                                 </a>
                             </li>
                             <li>
                                 <a href="#tab-pastries">
-                                    <span>Test 2</span>
+                                    <span>Regular Service Package</span>
                                     <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m14.523 18.787s4.501-4.505 6.255-6.26c.146-.146.219-.338.219-.53s-.073-.383-.219-.53c-1.753-1.754-6.255-6.258-6.255-6.258-.144-.145-.334-.217-.524-.217-.193 0-.385.074-.532.221-.293.292-.295.766-.004 1.056l4.978 4.978h-14.692c-.414 0-.75.336-.75.75s.336.75.75.75h14.692l-4.979 4.979c-.289.289-.286.762.006 1.054.148.148.341.222.533.222.19 0 .378-.072.522-.215z" fill-rule="nonzero"/></svg>
                                 </a>
                             </li>
                             <li>
                                 <a href="#tab-gourmet-treats">
-                                    <span>Test 3</span>
+                                    <span>Special Service Package</span>
                                     <svg clip-rule="evenodd" fill-rule="evenodd" stroke-linejoin="round" stroke-miterlimit="2" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="m14.523 18.787s4.501-4.505 6.255-6.26c.146-.146.219-.338.219-.53s-.073-.383-.219-.53c-1.753-1.754-6.255-6.258-6.255-6.258-.144-.145-.334-.217-.524-.217-.193 0-.385.074-.532.221-.293.292-.295.766-.004 1.056l4.978 4.978h-14.692c-.414 0-.75.336-.75.75s.336.75.75.75h14.692l-4.979 4.979c-.289.289-.286.762.006 1.054.148.148.341.222.533.222.19 0 .378-.072.522-.215z" fill-rule="nonzero"/></svg>
                                 </a>
                             </li>
@@ -293,63 +295,30 @@
                         <div id="tab-signature-blends" class="menu-block__group tab-content__item">
 
                             <h6 class="menu-block__cat-name">
-                                Test 1
+                                Indigent Package
                             </h6>
 
                             <ul class="menu-list">
                                 <li class="menu-list__item">
                                     <div class="menu-list__item-desc">                                            
-                                        <h4>Test 1 S 1</h4>
+                                        <h4>Indigent Package</h4>
                                         <p>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                            Inclusion : 
                                         </p>
+                                        <ul>
+                                            <li>Funeral Service</li>
+                                            <li>Stucko Casket</li>
+                                            <li>Flower Stand courtesy Mayor Denver Chua</li>
+                                            <li>Flower Stand courtesy Mayor Cong Jolo Revilla</li>
+                                            <li>1 Flower (front)</li>
+                                            <li>Water Dispenser and 1 Bottle of watter (round)</li>
+                                            <li>20 Chairs</li>
+                                            <li>2 Bundle Flower Offering (Church Mass)</li>
+                                            <li>Tarpaulin</li>
+                                        </ul>
                                     </div>
                                     <div class="menu-list__item-price">
-                                        <span>₱</span>3.50
-                                    </div>
-                                </li>
-                                <li class="menu-list__item">
-                                    <div class="menu-list__item-desc">                                            
-                                        <h4>Test 1 S 2</h4>
-                                        <p>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                        </p>
-                                    </div>
-                                    <div class="menu-list__item-price">
-                                        <span>₱</span>4.25
-                                    </div>
-                                </li>
-                                <li class="menu-list__item">
-                                    <div class="menu-list__item-desc">                                            
-                                        <h4>Test 1 S 3</h4>
-                                        <p>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                        </p>
-                                    </div>
-                                    <div class="menu-list__item-price">
-                                        <span>₱</span>4.00
-                                    </div>
-                                </li>
-                                <li class="menu-list__item">
-                                    <div class="menu-list__item-desc">                                            
-                                        <h4>Test 1 S 4</h4>
-                                        <p>
-                                            Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                        </p>
-                                    </div>
-                                    <div class="menu-list__item-price">
-                                        <span>₱</span>4.50
-                                    </div>
-                                </li>
-                                <li class="menu-list__item">
-                                    <div class="menu-list__item-desc">                                            
-                                        <h4>Test 1 S 5</h4>
-                                        <p>
-                                           Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                        </p>
-                                    </div>
-                                    <div class="menu-list__item-price">
-                                        <span>₱</span>4.25
+                                        <span>₱</span>25,000.00
                                     </div>
                                 </li>
                             </ul> <!-- end menu-list -->
@@ -360,63 +329,82 @@
                         <div id="tab-pastries" class="menu-block__group tab-content__item">
 
                             <h6 class="menu-block__cat-name">
-                                Test 2
+                                Regular Service Package
                             </h6>
 
                             <ul class="menu-list">
                                 <li class="menu-list__item">
                                     <div class="menu-list__item-desc">                                            
-                                        <h4>Test 2 S 1</h4>
+                                        <h4>OMS Half Glass Casket</h4>
                                         <p>
-                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                            Inclusion : 
                                         </p>
+                                        <ul>
+                                            <li>2pcs Stand Flower</li>
+                                            <li>1 Flower (front)</li>
+                                            <li>Water Dispenser and 2 Bottle of watter (round)</li>
+                                            <li>20 Chairs</li>
+                                            <li>2 Bundle Flower Offering (Church Mass)</li>
+                                            <li>1 Pair Candle</li>
+                                        </ul>
                                     </div>
                                     <div class="menu-list__item-price">
-                                        <span>₱</span>2.50
+                                        <span>₱</span>45,000.00
                                     </div>
                                 </li>
                                 <li class="menu-list__item">
                                     <div class="menu-list__item-desc">                                            
-                                        <h4>Test 2 S 2</h4>
+                                        <h4>OMS Half Glass Casket</h4>
                                         <p>
-                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                            Inclusion : 
                                         </p>
+                                        <ul>
+                                            <li>4pcs Stand Flower</li>
+                                            <li>2 Flower (front)</li>
+                                            <li>Water Dispenser and 5 Bottle of watter (round)</li>
+                                            <li>40 Chairs</li>
+                                            <li>2 Bundle Flower Offering (Church Mass)</li>
+                                            <li>Flower Arrangement</li>
+                                            <li>6pcs Stand Flower</li>
+                                            <li>1 Flower (front)</li>
+                                            <li>2 Pair Candle</li>
+                                            <li>Tarpaulin</li>
+                                        </ul>
+                                        <br>
+                                        <ul>
+                                            <li>Goldilocks Pasalubong for Last Night</li>
+                                        </ul>
                                     </div>
                                     <div class="menu-list__item-price">
-                                        <span>₱</span>3.00
+                                        <span>₱</span>65,000.00
                                     </div>
                                 </li>
                                 <li class="menu-list__item">
                                     <div class="menu-list__item-desc">                                            
-                                        <h4>Test 2 S 3</h4>
+                                        <h4>Junior Full Cap Casket</h4>
                                         <p>
-                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
+                                            Inclusion : 
                                         </p>
+                                        <ul>
+                                            <li>4pcs Stand Flower (Change Flower)</li>
+                                            <li>3 Flower (front) (Change Flower)</li>
+                                            <li>Water Dispenser and 5 Bottle of watter (round)</li>
+                                            <li>40 Chairs</li>
+                                            <li>2 Bundle Flower Offering (Church Mass)</li>
+                                            <li>Flower Arrangement</li>
+                                            <li>6pcs Stand Flower</li>
+                                            <li>1 Flower (front)</li>
+                                            <li>2 Pair Candle</li>
+                                            <li>Tarpaulin</li>
+                                            <li>Picture with Frame</li>
+                                        </ul>
+                                        <br>
+                                        <ul>
+                                            <li>Goldilocks Pasalubong for Last Night</li>
+                                        </ul>
                                     </div>
                                     <div class="menu-list__item-price">
-                                        <span>₱</span>2.75
-                                    </div>
-                                </li>
-                                <li class="menu-list__item">
-                                    <div class="menu-list__item-desc">                                            
-                                        <h4>Test 2 S 4</h4>
-                                        <p>
-                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                        </p>
-                                    </div>
-                                    <div class="menu-list__item-price">
-                                        <span>₱</span>3.25
-                                    </div>
-                                </li>
-                                <li class="menu-list__item">
-                                    <div class="menu-list__item-desc">                                            
-                                        <h4>Test 2 S 5</h4>
-                                        <p>
-                                        Lorem ipsum, dolor sit amet consectetur adipisicing elit.
-                                        </p>
-                                    </div>
-                                    <div class="menu-list__item-price">
-                                        <span>₱</span>3.25
+                                        <span>₱</span>85,000.00
                                     </div>
                                 </li>
                             </ul> <!-- end menu-list -->
@@ -427,63 +415,68 @@
                         <div id="tab-gourmet-treats" class="menu-block__group tab-content__item">
 
                             <h6 class="menu-block__cat-name">
-                                Gourmet Treats
+                                Special Service Package
                             </h6>
 
                             <ul class="menu-list">
                                 <li class="menu-list__item">
                                     <div class="menu-list__item-desc">                                            
-                                        <h4>Artisanal Dark Chocolate Truffles</h4>
+                                        <h4>Junior Full Cap Casket</h4>
                                         <p>
-                                        Luxurious dark chocolate truffles dusted with cocoa powder.
+                                            Inclusion : 
                                         </p>
+                                        <ul>
+                                            <li>4pcs Stand Flower (Change Flower)</li>
+                                            <li>1 Flower (front) (Change Flower)</li>
+                                            <li>1 Flower (top) (Change Flower)</li>
+                                            <li>Water Dispenser and 5 Bottle of watter (round)</li>
+                                            <li>40 Chairs</li>
+                                            <li>2 Bundle Flower Offering (Church Mass)</li>
+                                            <li>Flower Arrangement</li>
+                                            <li>12pcs Stand Flower</li>
+                                            <li>1 Flower (front)</li>
+                                            <li>2 Pair Candle</li>
+                                            <li>Tarpaulin</li>
+                                            <li>Flower Stand Picture with Frame</li>
+                                            <li>Tent</li>
+                                        </ul>
+                                        <br>
+                                        <ul>
+                                            <li>Goldilocks Pasalubong for Last Night</li>
+                                        </ul>
                                     </div>
                                     <div class="menu-list__item-price">
-                                        <span>$</span>2.75
+                                        <span>₱</span>180,000.00
                                     </div>
                                 </li>
                                 <li class="menu-list__item">
                                     <div class="menu-list__item-desc">                                            
-                                        <h4>Handcrafted Praline Bonbons</h4>
+                                        <h4>Junior Full Cap Casket</h4>
                                         <p>
-                                        Praline-filled bonbons topped with a caramelized nut.
+                                            Inclusion : 
                                         </p>
+                                        <ul>
+                                            <li>4pcs Stand Flower (Change Flower)</li>
+                                            <li>1 Flower (front) (Change Flower)</li>
+                                            <li>1 Flower (top) (Change Flower)</li>
+                                            <li>Water Dispenser and 5 Bottle of watter (round)</li>
+                                            <li>40 Chairs</li>
+                                            <li>2 Bundle Flower Offering (Church Mass)</li>
+                                            <li>Flower Arrangement</li>
+                                            <li>20pcs Stand Flower</li>
+                                            <li>1 Flower (front)</li>
+                                            <li>3 Pair Candle</li>
+                                            <li>Tarpaulin</li>
+                                            <li>Flower Stand Picture with Frame</li>
+                                            <li>Tent</li>
+                                        </ul>
+                                        <br>
+                                        <ul>
+                                            <li>Goldilocks Pasalubong & Serenata Band for Last Night</li>
+                                        </ul>
                                     </div>
                                     <div class="menu-list__item-price">
-                                        <span>$</span>3.00
-                                    </div>
-                                </li>
-                                <li class="menu-list__item">
-                                    <div class="menu-list__item-desc">                                            
-                                        <h4>Pistachio and Sea Salt Toffee</h4>
-                                        <p>
-                                        Crunchy toffee coated in pistachios and sea salt.
-                                        </p>
-                                    </div>
-                                    <div class="menu-list__item-price">
-                                        <span>$</span>4.00
-                                    </div>
-                                </li>
-                                <li class="menu-list__item">
-                                    <div class="menu-list__item-desc">                                            
-                                        <h4>Raspberry White Chocolate Bark</h4>
-                                        <p>
-                                        Creamy white chocolate with swirls of raspberry and a sprinkle of almonds. 
-                                        </p>
-                                    </div>
-                                    <div class="menu-list__item-price">
-                                        <span>$</span>3.50
-                                    </div>
-                                </li>
-                                <li class="menu-list__item">
-                                    <div class="menu-list__item-desc">                                            
-                                        <h4>Salted Caramel Brownie Bites</h4>
-                                        <p>
-                                        Fudgy brownie bites with a caramel drizzle and a touch of sea salt.
-                                        </p>
-                                    </div>
-                                    <div class="menu-list__item-price">
-                                        <span>$</span>2.50
+                                        <span>₱</span>280,000.00
                                     </div>
                                 </li>
                             </ul> <!-- end menu-list -->
@@ -514,66 +507,37 @@
             <div class="gallery-items grid-cols grid-cols--wrap">
 
                 <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
+                    <a href="images/gallery/large/1.jpeg" class="gallery-items__item-thumb glightbox">
+                        <img src="images/gallery/1.jpeg" 
+                            srcset="images/gallery/large/1.jpeg" alt="">                                
                     </a>
                 </div> <!-- end casket-items__item-->
     
                 <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
+                    <a href="images/gallery/large/2.jpeg" class="gallery-items__item-thumb glightbox">
+                        <img src="images/gallery/2.jpeg" 
+                            srcset="images/gallery/large/2.jpeg" alt="">                               
                     </a>
                 </div> <!-- end casket-items__item -->
     
                 <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
+                    <a href="images/gallery/large/3.jpeg" class="gallery-items__item-thumb glightbox">
+                        <img src="images/gallery/3.jpeg" 
+                            srcset="images/gallery/large/3.jpeg" alt="">                             
                     </a>
                 </div> <!-- end casket-items__item -->
     
                 <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
+                    <a href="images/gallery/large/4.jpeg" class="gallery-items__item-thumb glightbox">
+                        <img src="images/gallery/4.jpeg" 
+                            srcset="images/gallery/large/4.jpeg" alt="">                        
                     </a>
                 </div> <!-- end casket-items__item -->
     
                 <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
-                    </a>
-                </div> <!-- end casket-items__item -->
-    
-                <div class="gallery-items__item grid-cols__column">
-                   <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
-                    </a>
-                </div> <!-- end casket-items__item -->
-    
-                <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
-                    </a>
-                </div> <!-- end casket-items__item -->
-    
-                <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
+                    <a href="images/gallery/large/5.jpeg" class="gallery-items__item-thumb glightbox">
+                        <img src="images/gallery/5.jpeg" 
+                            srcset="images/gallery/large/5.jpeg" alt="">                                    
                     </a>
                 </div> <!-- end casket-items__item -->
                 
@@ -597,66 +561,37 @@
             <div class="gallery-items grid-cols grid-cols--wrap">
 
                 <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
+                    <a href="images/gallery/large/6.jpeg" class="gallery-items__item-thumb glightbox">
+                        <img src="images/gallery/6.jpeg" 
+                            srcset="images/gallery/large/6.jpeg" alt="">                          
                     </a>
                 </div> <!-- end gallery-items__item-->
     
                 <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
+                    <a href="images/gallery/large/7.jpeg" class="gallery-items__item-thumb glightbox">
+                        <img src="images/gallery/7.jpeg" 
+                            srcset="images/gallery/large/7.jpeg" alt="">                          
+                    </a>
+                </div> <!-- end gallery-items__item -->
+
+                <div class="gallery-items__item grid-cols__column">
+                    <a href="images/gallery/large/8.jpeg" class="gallery-items__item-thumb glightbox">
+                        <img src="images/gallery/8.jpeg" 
+                            srcset="images/gallery/large/8.jpeg" alt="">                           
                     </a>
                 </div> <!-- end gallery-items__item -->
     
                 <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
+                    <a href="images/gallery/large/9.jpeg" class="gallery-items__item-thumb glightbox">
+                        <img src="images/gallery/9.jpeg" 
+                            srcset="images/gallery/large/9.jpeg" alt="">                           
                     </a>
                 </div> <!-- end gallery-items__item -->
     
                 <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
-                    </a>
-                </div> <!-- end gallery-items__item -->
-    
-                <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
-                    </a>
-                </div> <!-- end gallery-items__item -->
-    
-                <div class="gallery-items__item grid-cols__column">
-                   <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
-                    </a>
-                </div> <!-- end gallery-items__item -->
-    
-                <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
-                    </a>
-                </div> <!-- end gallery-items__item -->
-    
-                <div class="gallery-items__item grid-cols__column">
-                    <a href="images/gallery/large/l-gallery-01.jpg" class="gallery-items__item-thumb glightbox">
-                        <img src="images/gallery/gallery-01.jpg" 
-                            srcset="images/gallery/large/l-gallery-01.jpg, 
-                                    images/gallery/gallery-01@2x.jpg" alt="">                                
+                    <a href="images/gallery/large/10.jpeg" class="gallery-items__item-thumb glightbox">
+                        <img src="images/gallery/10.jpeg" 
+                            srcset="images/gallery/large/10.jpeg" alt="">                           
                     </a>
                 </div> <!-- end gallery-items__item -->
                 
@@ -665,88 +600,89 @@
         </section> <!-- end s-gallery -->  
 
 
-        <!-- # testimonials
+        <!-- # obituaries
         ================================================== -->
-        <section id="testimonials" class="container s-testimonials">
+        <section id="testimonials" class="s-obituaries">
 
-            <div class="row s-testimonials__content">
-                <div class="column xl-12">
+            <div class="container">
+                <div class="obituaries-header">
+                    <div class="obituaries-header__line"></div>
+                    <h2 class="obituaries-header__title">In Memoriam</h2>
+                    <p class="obituaries-header__sub">Honoring those who have passed</p>
+                    <div class="obituaries-header__line"></div>
+                </div>
 
-                    <h3 class="testimonials-title u-text-center">What Our Clients Say</h3>
-    
-                    <div class="swiper-container testimonials-slider">    
-                        <div class="swiper-wrapper">
+                <?php if (!empty($obituaries)): ?>
+                <div class="swiper-container obituaries-slider">
+                    <div class="swiper-wrapper">
 
-                            <div class="testimonials-slider__slide swiper-slide">
-                                <div class="testimonials-slider__author">
-                                    <img src="images/avatars/user-02.jpg" alt="Author image" class="testimonials-slider__avatar">
-                                    <cite class="testimonials-slider__cite">
-                                        John Rockefeller
-                                        <span>Cleveland, Ohio</span>
-                                    </cite>
-                                </div>
-                                <p>
-                                Molestiae incidunt consequatur quis ipsa autem nam sit enim magni. Voluptas tempore rem. 
-                                Explicabo a quaerat sint autem dolore ducimus ut consequatur neque. Nisi dolores quaerat fuga rem nihil nostrum.
-                                Laudantium quia consequatur molestias.
-                                </p>
-                            </div> <!-- end testimonials-slider__slide -->
-            
-                            <div class="testimonials-slider__slide swiper-slide">
-                                <div class="testimonials-slider__author">
-                                    <img src="images/avatars/user-03.jpg" alt="Author image" class="testimonials-slider__avatar">
-                                    <cite class="testimonials-slider__cite">
-                                        Andrew Carnegie
-                                        <span>Pittsburgh, Pennsylvania</span>
-                                    </cite>
-                                </div>
-                                <p>
-                                Excepturi nam cupiditate culpa doloremque deleniti repellat. Veniam quos repellat voluptas animi adipisci.
-                                Nisi eaque consequatur. Voluptatem dignissimos ut ducimus accusantium perspiciatis.
-                                Quasi voluptas eius distinctio. Atque eos maxime.
-                                </p>
-                            </div> <!-- end testimonials-slider__slide -->
-            
-                            <div class="testimonials-slider__slide swiper-slide">
-                                <div class="testimonials-slider__author">
-                                    <img src="images/avatars/user-01.jpg" alt="Author image" class="testimonials-slider__avatar">
-                                    <cite class="testimonials-slider__cite">
-                                        John Morgan
-                                        <span>New York City</span>
-                                    </cite>
-                                </div>
-                                <p>
-                                Repellat dignissimos libero. Qui sed at corrupti expedita voluptas odit. Nihil ea quia nesciunt. Ducimus aut sed ipsam.  
-                                Autem eaque officia cum exercitationem sunt voluptatum accusamus. Quasi voluptas eius distinctio.
-                                Voluptatem dignissimos ut.
-                                </p>
-                            </div> <!-- end testimonials-slider__slide -->
-    
-                            <div class="testimonials-slider__slide swiper-slide">
-                                <div class="testimonials-slider__author">
-                                    <img src="images/avatars/user-06.jpg" alt="Author image" class="testimonials-slider__avatar">
-                                    <cite class="testimonials-slider__cite">
-                                        Henry Ford
-                                        <span>Dearborn, Michigan</span>
-                                    </cite>
-                                </div>
-                                <p>
-                                Nunc interdum lacus sit amet orci. Vestibulum dapibus nunc ac augue. Fusce vel dui. In ac felis 
-                                quis tortor malesuada pretium. Curabitur vestibulum aliquam leo. Qui sed at corrupti expedita voluptas odit. 
-                                Nihil ea quia nesciunt. Ducimus aut sed ipsam.
-                                </p>
-                            </div> <!-- end testimonials-slider__slide -->
-        
-                        </div> <!-- end swiper-wrapper -->
-    
-                        <div class="swiper-pagination"></div>
-    
-                    </div> <!-- end testimonials-slider -->
-    
-                </div> <!-- end column -->
-            </div> <!-- end s-testimonials__content -->
+                        <?php foreach ($obituaries as $ob): ?>
+                        <div class="obituary-card swiper-slide">
 
-        </section> <!-- end s-testimonials --> 
+                            <div class="obituary-card__photo-wrap">
+                                <?php if (!empty($ob['fld_ObituaryImage'])): ?>
+                                    <img src="data:image/jpeg;base64,<?= $ob['fld_ObituaryImage'] ?>"
+                                         alt="<?= esc($ob['fld_FirstName'] . ' ' . $ob['fld_LastName']) ?>"
+                                         class="obituary-card__photo">
+                                <?php else: ?>
+                                    <div class="obituary-card__photo obituary-card__photo--placeholder">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 24 24" fill="currentColor">
+                                            <path d="M12 12c2.7 0 4.8-2.1 4.8-4.8S14.7 2.4 12 2.4 7.2 4.5 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
+                                        </svg>
+                                    </div>
+                                <?php endif; ?>
+                                <div class="obituary-card__candle">&#x1F56F;</div>
+                            </div>
+
+                            <div class="obituary-card__body">
+                                <h3 class="obituary-card__name">
+                                    <?= esc($ob['fld_FirstName'] . ' ' . ($ob['fld_MiddleName'] ? $ob['fld_MiddleName'] . ' ' : '') . $ob['fld_LastName']) ?>
+                                </h3>
+
+                                <?php if (!empty($ob['fld_DateOfBirth']) || !empty($ob['fld_DateOfDeath'])): ?>
+                                <p class="obituary-card__dates">
+                                    <?= !empty($ob['fld_DateOfBirth']) ? esc(date('F j, Y', strtotime($ob['fld_DateOfBirth']))) : '?' ?>
+                                    &nbsp;&mdash;&nbsp;
+                                    <?= !empty($ob['fld_DateOfDeath']) ? esc(date('F j, Y', strtotime($ob['fld_DateOfDeath']))) : '?' ?>
+                                </p>
+                                <?php endif; ?>
+
+                                <div class="obituary-card__divider"></div>
+
+                                <?php if (!empty($ob['fld_BurialDate'])): ?>
+                                <div class="obituary-card__detail">
+                                    <span class="obituary-card__detail-icon">&#x26B0;</span>
+                                    <span>
+                                        <strong>Burial:</strong>
+                                        <?= esc(date('F j, Y', strtotime($ob['fld_BurialDate']))) ?>
+                                        <?php if (!empty($ob['fld_BurialTime'])): ?>
+                                            at <?= esc(date('g:i A', strtotime($ob['fld_BurialTime']))) ?>
+                                        <?php endif; ?>
+                                    </span>
+                                </div>
+                                <?php endif; ?>
+
+                                <?php if (!empty($ob['fld_Cemetery'])): ?>
+                                <div class="obituary-card__detail">
+                                    <span class="obituary-card__detail-icon">&#x1F4CD;</span>
+                                    <span><?= esc($ob['fld_Cemetery']) ?></span>
+                                </div>
+                                <?php endif; ?>
+                            </div>
+
+                        </div> <!-- end obituary-card -->
+                        <?php endforeach; ?>
+
+                    </div> <!-- end swiper-wrapper -->
+                    <div class="swiper-pagination obituaries-pagination"></div>
+                </div> <!-- end obituaries-slider -->
+
+                <?php else: ?>
+                    <p class="obituaries-empty">No obituaries to display at this time.</p>
+                <?php endif; ?>
+            </div>
+
+        </section> <!-- end s-obituaries --> 
 
         
         <!-- # contact
@@ -1062,6 +998,14 @@
             </div>
 
             <form class="deceased-modal__form" id="deceased-form" novalidate>
+                <!-- Transaction number -->
+                <fieldset class="deceased-modal__fieldset">
+                    <legend>Transaction</legend>
+                    <div class="login-modal__field">
+                        <label for="transaction-number">Transaction No.</label>
+                        <input type="text" id="transaction-number" name="transaction_number" readonly>
+                    </div>
+                </fieldset>
 
                 <!-- Name -->
                 <fieldset class="deceased-modal__fieldset">
@@ -1097,6 +1041,16 @@
                         <div class="login-modal__field">
                             <label for="dec-tod">Time of Death</label>
                             <input type="time" id="dec-tod" name="time_of_death">
+                        </div>
+                    </div>
+                    <div class="deceased-modal__row deceased-modal__row--2">
+                        <div class="login-modal__field">
+                            <label for="dec-burial-date">Burial Date</label>
+                            <input type="date" id="dec-burial-date" name="burial_date">
+                        </div>
+                        <div class="login-modal__field">
+                            <label for="dec-burial-time">Burial Time</label>
+                            <input type="time" id="dec-burial-time" name="burial_time">
                         </div>
                     </div>
                     <div class="deceased-modal__row deceased-modal__row--vital">
@@ -1203,6 +1157,37 @@
                     </div>
                 </fieldset>
 
+                <!-- Body pickup address -->
+                <fieldset class="deceased-modal__fieldset">
+                    <legend>Body Pickup</legend>
+                    <div class="login-modal__field">
+                        <label for="dec-pickup-address">Address Where Body Will Be Picked Up</label>
+                        <input type="text" id="dec-pickup-address" name="pickup_address"
+                               placeholder="Street, Barangay, City, Province" required>
+                    </div>
+                </fieldset>
+
+                <!-- Obituary image -->
+                <fieldset class="deceased-modal__fieldset">
+                    <legend>Obituary Photo</legend>
+                    <div class="login-modal__field">
+                        <label for="dec-obituary">Photo for Obituary <span class="deceased-modal__note">(JPG or PNG — max 5MB)</span></label>
+                        <div class="deceased-modal__upload-wrap" id="obituary-wrap">
+                            <input type="file" id="dec-obituary" name="obituary_image"
+                                   accept=".jpg,.jpeg,.png">
+                            <div class="deceased-modal__upload-ui" id="obituary-ui">
+                                <svg xmlns="http://www.w3.org/2000/svg" width="28" height="28" viewBox="0 0 24 24"
+                                     fill="none" stroke="currentColor" stroke-width="1.5"
+                                     stroke-linecap="round" stroke-linejoin="round">
+                                    <rect x="3" y="3" width="18" height="18" rx="2"/><circle cx="8.5" cy="8.5" r="1.5"/>
+                                    <polyline points="21 15 16 10 5 21"/>
+                                </svg>
+                                <span id="obituary-label">Click or drag a photo here</span>
+                            </div>
+                        </div>
+                    </div>
+                </fieldset>
+
                 <!-- Payment receipt -->
                 <fieldset class="deceased-modal__fieldset">
                     <legend>Payment</legend>
@@ -1241,12 +1226,45 @@
 
                 <div class="login-modal__status" id="deceased-status" aria-live="polite"></div>
 
+                <!-- Terms & Conditions checkbox -->
+                <div class="deceased-modal__terms">
+                    <label class="deceased-modal__terms-label">
+                        <input type="checkbox" id="terms-agree" name="terms_agree">
+                        <span>I have read and agree to the
+                            <a href="#0" id="open-terms" class="deceased-modal__terms-link">Terms and Conditions</a>
+                        </span>
+                    </label>
+                </div>
+
                 <div class="deceased-modal__actions">
                     <button type="button" class="btn deceased-modal__btn--cancel" id="deceased-cancel">Cancel</button>
-                    <button type="submit" class="btn deceased-modal__btn--submit" id="deceased-submit">Submit Registration</button>
+                    <button type="submit" class="btn deceased-modal__btn--submit" id="deceased-submit" disabled>Submit Registration</button>
                 </div>
 
             </form>
+        </div>
+    </div>
+
+    <!-- # Terms and Conditions modal
+    ================================================== -->
+    <div id="terms-modal" class="login-modal" role="dialog" aria-modal="true" aria-labelledby="terms-modal-title" hidden>
+        <div class="login-modal__overlay" id="terms-modal-overlay"></div>
+        <div class="login-modal__box terms-modal__box">
+            <button class="login-modal__close" id="terms-modal-close" aria-label="Close">&times;</button>
+            <h2 id="terms-modal-title" class="login-modal__title">Terms and Conditions</h2>
+            <div class="terms-modal__body">
+                <p class="terms-modal__subtitle">Funeral Home Services</p>
+                <ol class="terms-modal__list">
+                    <li>Clients are not allowed to avail of a casket only. All services must be availed as part of a complete funeral package.</li>
+                    <li>No down payment is required; however, full payment must be settled at least one (1) day prior to the burial. The funeral service and burial will not proceed unless full payment has been completed.</li>
+                    <li>Any lost or damaged items must be paid for accordingly. If the item is later returned in good condition, the payment made will be refunded.</li>
+                    <li>For oversized cases, an additional fee will be required for the casket.</li>
+                    <li>If the wake or service extends beyond the scheduled burial date, additional charges will apply.</li>
+                </ol>
+            </div>
+            <div class="terms-modal__footer">
+                <button type="button" class="btn deceased-modal__btn--submit" id="terms-accept">I Agree</button>
+            </div>
         </div>
     </div>
 
@@ -1532,7 +1550,7 @@
                     var price       = priceEl ? priceEl.textContent.trim() : '';
                     document.getElementById('package').value       = packageName;
                     document.getElementById('package-price').value = price;
-                    showModal(document.getElementById('deceased-modal'));
+                    window.openDeceasedModal();
                 });
             });
 
@@ -1545,9 +1563,31 @@
             const deceasedSubmit  = document.getElementById('deceased-submit');
 
             // expose opener globally so other parts of the page can call it
-            window.openDeceasedModal = function () { showModal(deceasedModal); };
+            window.openDeceasedModal = function () {
+                // reset form and UI state
+                document.getElementById('deceased-form').reset();
+                document.getElementById('deceased-submit').disabled = true;
+                document.getElementById('upload-label').textContent  = 'Click or drag a file here';
+                document.getElementById('upload-ui').classList.remove('has-file');
+                document.getElementById('obituary-label').textContent = 'Click or drag a photo here';
+                document.getElementById('obituary-ui').classList.remove('has-file');
+                setStatus(deceasedStatus, '', '');
 
-            // file upload UI
+                // generate fresh transaction number: YYYYMMddHHmmssms
+                var now = new Date();
+                var pad = function (n, len) { return String(n).padStart(len || 2, '0'); };
+                var txn = String(now.getFullYear())
+                    + pad(now.getMonth() + 1)
+                    + pad(now.getDate())
+                    + pad(now.getHours())
+                    + pad(now.getMinutes())
+                    + pad(now.getSeconds())
+                    + pad(now.getMilliseconds(), 3);
+                document.getElementById('transaction-number').value = txn;
+                showModal(deceasedModal);
+            };
+
+            // file upload UI — payment receipt
             var fileInput   = document.getElementById('payment');
             var uploadLabel = document.getElementById('upload-label');
             var uploadUi    = document.getElementById('upload-ui');
@@ -1567,6 +1607,30 @@
                         fileInput.files = e.dataTransfer.files;
                         uploadLabel.textContent = fileInput.files[0] ? fileInput.files[0].name : 'Click or drag a file here';
                         uploadUi.classList.toggle('has-file', !!fileInput.files[0]);
+                    }
+                });
+            });
+
+            // file upload UI — obituary photo
+            var obituaryInput = document.getElementById('dec-obituary');
+            var obituaryLabel = document.getElementById('obituary-label');
+            var obituaryUi    = document.getElementById('obituary-ui');
+
+            obituaryInput.addEventListener('change', function () {
+                obituaryLabel.textContent = this.files[0] ? this.files[0].name : 'Click or drag a photo here';
+                obituaryUi.classList.toggle('has-file', !!this.files[0]);
+            });
+
+            ['dragover', 'dragleave', 'drop'].forEach(function (evt) {
+                document.getElementById('obituary-wrap').addEventListener(evt, function (e) {
+                    e.preventDefault();
+                    if (evt === 'dragover') obituaryUi.classList.add('drag-over');
+                    if (evt === 'dragleave') obituaryUi.classList.remove('drag-over');
+                    if (evt === 'drop') {
+                        obituaryUi.classList.remove('drag-over');
+                        obituaryInput.files = e.dataTransfer.files;
+                        obituaryLabel.textContent = obituaryInput.files[0] ? obituaryInput.files[0].name : 'Click or drag a photo here';
+                        obituaryUi.classList.toggle('has-file', !!obituaryInput.files[0]);
                     }
                 });
             });
@@ -1594,8 +1658,12 @@
 
                     if (json.status === 'success') {
                         setStatus(deceasedStatus, 'Registration submitted successfully.', 'success');
-                        form.reset();
-                        setTimeout(function () { hideModal(deceasedModal); }, 1800);
+                        setTimeout(function () {
+                            form.reset();
+                            document.getElementById('deceased-submit').disabled = true;
+                            hideModal(deceasedModal);
+                            setStatus(deceasedStatus, '', '');
+                        }, 2000);
                     } else {
                         const msg = typeof json.message === 'object'
                             ? Object.values(json.message).join(' ')
@@ -1608,6 +1676,41 @@
                     deceasedSubmit.disabled = false;
                     deceasedSubmit.textContent = 'Submit Registration';
                 }
+            });
+
+            // ── Terms & Conditions ────────────────────────────────────────
+            var termsModal   = document.getElementById('terms-modal');
+            var termsCheckbox = document.getElementById('terms-agree');
+            var submitBtn    = document.getElementById('deceased-submit');
+
+            // checkbox toggles submit button
+            termsCheckbox.addEventListener('change', function () {
+                submitBtn.disabled = !this.checked;
+            });
+
+            // open terms modal
+            document.getElementById('open-terms').addEventListener('click', function (e) {
+                e.preventDefault();
+                termsModal.hidden = false;
+                document.body.style.overflow = 'hidden';
+            });
+
+            // close terms modal
+            document.getElementById('terms-modal-close').addEventListener('click', function () {
+                termsModal.hidden = true;
+                document.body.style.overflow = '';
+            });
+            document.getElementById('terms-modal-overlay').addEventListener('click', function () {
+                termsModal.hidden = true;
+                document.body.style.overflow = '';
+            });
+
+            // "I Agree" — check the box and close
+            document.getElementById('terms-accept').addEventListener('click', function () {
+                termsCheckbox.checked  = true;
+                submitBtn.disabled     = false;
+                termsModal.hidden      = true;
+                document.body.style.overflow = '';
             });
 
             // ── QR lightbox ───────────────────────────────────────────────

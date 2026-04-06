@@ -17,6 +17,8 @@ class DeceasedModel extends Model
         'fld_LastName',
         'fld_DateOfBirth',
         'fld_DateOfDeath',
+        'fld_BurialDate',
+        'fld_BurialTime',
         'fld_TimeOfDeath',
         'fld_Age',
         'fld_Sex',
@@ -35,5 +37,9 @@ class DeceasedModel extends Model
         'fld_Package',
         'fld_PackagePrice',
         'fld_Payment',
+        'fld_PickupAddress',
+        'fld_ObituaryImage',
+        'fld_TransactionNumber',
+        'fld_TransactionStatus',
     ];
 }

@@ -54,7 +54,7 @@ class Home extends BaseController
                 }
             }
         }
-        catch (Exception $e){
+        catch (\Exception $e){
             $session->setFlashdata('error', 'An error occured: ' . $e->getMessage());
         }
 
@@ -82,6 +82,17 @@ class Home extends BaseController
             ->where('fld_Status', 'Active')
             ->orderBy('fld_Sort', 'ASC')
             ->findAll();
+
+        // obituaries — approved deceased records with an obituary image
+        $obituaries = (new \App\Models\DeceasedModel())
+            ->where('fld_TransactionStatus', 'APPROVED')
+            ->findAll();
+        foreach ($obituaries as &$ob) {
+            if (!empty($ob['fld_ObituaryImage'])) {
+                $ob['fld_ObituaryImage'] = base64_encode($ob['fld_ObituaryImage']);
+            }
+        }
+        $data['obituaries'] = $obituaries;
 
         $aboutImages = (new CmsAboutImageModel())->where('fld_Status', 'Active')->findAll();
         foreach ($aboutImages as &$img) {

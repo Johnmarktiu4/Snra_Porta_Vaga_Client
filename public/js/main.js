@@ -188,15 +188,19 @@
     
         const testimonialSlider = function() {
 
-            const tSlider = document.querySelector('.testimonials-slider');            
+            const tSlider = document.querySelector('.testimonials-slider') || document.querySelector('.obituaries-slider');            
             if (!(tSlider)) return;
 
             const slider = new Swiper(tSlider, {
 
                 slidesPerView: 1,
+                observer     : true,
+                observeParents: true,
+                watchOverflow: true,
                 pagination: {
                     el: '.swiper-pagination',
                     clickable: true,
+                    dynamicBullets: true,
                 },
                 breakpoints: {
                     // when window width is > 400px
